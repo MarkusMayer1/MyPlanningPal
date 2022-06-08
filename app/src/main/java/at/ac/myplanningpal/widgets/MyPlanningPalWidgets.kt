@@ -1,8 +1,6 @@
 package at.ac.myplanningpal.widgets
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -14,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import at.ac.myplanningpal.models.Appointment
-import at.ac.myplanningpal.models.getAppointmentsFromModel
+import at.ac.myplanningpal.models.Note
 import java.time.LocalDate
-import java.time.temporal.ChronoField
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun AppointmentRow(
@@ -85,10 +83,12 @@ fun AppointmentRow(
 
 @Composable
 fun AppointmentWithMonthAndDay(
-    date: LocalDate,
+    stringDate: String,
     appointments: List<Appointment>,
     onItemClick: (Appointment) -> Unit = {}
 ) {
+    val date = LocalDate.parse(stringDate, DateTimeFormatter.ISO_LOCAL_DATE)
+
     Text(
         text = date.month.toString(),
         style = MaterialTheme.typography.h6
@@ -105,7 +105,7 @@ fun AppointmentWithMonthAndDay(
         Column {
             val appointmentsByDate = mutableListOf<Appointment>()
             for (appointment in appointments) {
-                if (appointment.date == date) appointmentsByDate.add(appointment)
+                if (appointment.date == date.toString()) appointmentsByDate.add(appointment)
             }
 
             for (appointment in appointmentsByDate) {
@@ -119,4 +119,53 @@ fun AppointmentWithMonthAndDay(
         color = MaterialTheme.colors.onSurface,
         thickness = 2.dp
     )
+}
+
+@Composable
+fun NoteRow(
+    note: Note,
+    onItemClick: (Note) -> Unit = {}
+) {
+    Card(
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxWidth()
+        /*.clickable { onItemClick(appointment) }*/,
+        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+        elevation = 6.dp
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth(0.8f)
+            ) {
+                Text(text = note.title, style = MaterialTheme.typography.h6)
+                Text(
+                    text = "Date: ${note.date}",
+                    style = MaterialTheme.typography.caption
+                )
+                Text(
+                    text = "Description: ${note.description}",
+                    style = MaterialTheme.typography.caption
+                )
+            }
+
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                IconButton(onClick = { onItemClick(note) }) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "delete",
+                        tint = MaterialTheme.colors.secondary
+                    )
+                }
+            }
+        }
+    }
 }

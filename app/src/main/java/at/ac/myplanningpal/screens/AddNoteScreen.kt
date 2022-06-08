@@ -3,7 +3,10 @@ package at.ac.myplanningpal.screens
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -15,13 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import at.ac.myplanningpal.models.Appointment
-import at.ac.myplanningpal.viewmodel.AppointmentViewModel
+import at.ac.myplanningpal.models.Note
+import at.ac.myplanningpal.viewmodel.NoteViewModel
 import java.time.LocalDate
 import java.util.*
 
 @Composable
-fun AddAppointmentScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController = rememberNavController()) {
+fun AddNoteScreen(noteViewModel: NoteViewModel = viewModel(), navController: NavController = rememberNavController()) {
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -34,20 +37,18 @@ fun AddAppointmentScreen(appointmentViewModel: AppointmentViewModel = viewModel(
             })
         }
     ) {
-        MainContentAddAppointmentScreen(navController = navController, appointmentViewModel = appointmentViewModel)
+        MainContentAddNoteScreen(navController = navController, noteViewModel = noteViewModel)
     }
 }
 
 @Composable
-fun MainContentAddAppointmentScreen(
+fun MainContentAddNoteScreen(
     navController: NavController = rememberNavController(),
-    appointmentViewModel: AppointmentViewModel = viewModel()
+    noteViewModel: NoteViewModel = viewModel()
 ) {
     var title by remember { mutableStateOf("") }
     var date = remember { mutableStateOf(LocalDate.now().toString()) }
-    var eventName by remember { mutableStateOf("") }
-    var eventDescription by remember { mutableStateOf("") }
-    var alarm by remember { mutableStateOf(false) }
+    var description by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -97,38 +98,23 @@ fun MainContentAddAppointmentScreen(
         }
 
         OutlinedTextField(
-            value = eventName,
-            label = { Text(text = "Event name:") },
-            onValueChange = {
-                eventName = it
-            }
-        )
-
-        OutlinedTextField(
-            value = eventDescription,
+            value = description,
             label = { Text(text = "Description:") },
             onValueChange = {
-                eventDescription = it
+                description = it
             }
         )
-
-        Row {
-            Text(text = "Alarm: ")
-            Switch(checked = alarm, onCheckedChange = { alarm = it })
-        }
 
         Button(
             modifier = Modifier.padding(16.dp),
             onClick = {
-                if(title.isNotEmpty() && eventName.isNotEmpty()){
-                    val newAppointment = Appointment(
+                if(title.isNotEmpty() && description.isNotEmpty()){
+                    val newNote = Note(
                         title = title,
                         date =  date.value,
-                        eventName = eventName,
-                        eventDescription = eventDescription,
-                        alarm = alarm)
+                        description = description)
 
-                    appointmentViewModel.addAppointment(newAppointment)
+                    noteViewModel.addNote(newNote)
                     navController.popBackStack()
                 }
 

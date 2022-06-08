@@ -5,6 +5,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import at.ac.myplanningpal.navigation.MyPlanningPalScreens
 import at.ac.myplanningpal.viewmodel.AppointmentViewModel
 import com.himanshoe.kalendar.common.KalendarSelector
 import com.himanshoe.kalendar.common.KalendarStyle
@@ -12,10 +15,10 @@ import com.himanshoe.kalendar.ui.Kalendar
 import com.himanshoe.kalendar.ui.KalendarType
 
 @Composable
-fun CalendarViewScreen(appointmentViewModel: AppointmentViewModel = viewModel()) {
+fun CalendarViewScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController = rememberNavController()) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }, backgroundColor = MaterialTheme.colors.primary) {
+            FloatingActionButton(onClick = { navController.navigate(route =  MyPlanningPalScreens.AddAppointmentScreen.name) }, backgroundColor = MaterialTheme.colors.primary) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }
         }

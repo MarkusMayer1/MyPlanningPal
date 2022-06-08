@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import at.ac.myplanningpal.navigation.MyPlanningPalScreens
 import at.ac.myplanningpal.viewmodel.AppointmentViewModel
 import at.ac.myplanningpal.widgets.AppointmentWithMonthAndDay
 
@@ -19,7 +20,7 @@ import at.ac.myplanningpal.widgets.AppointmentWithMonthAndDay
 fun CalendarListViewScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController = rememberNavController()) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }, backgroundColor = MaterialTheme.colors.primary) {
+            FloatingActionButton(onClick = { navController.navigate(route =  MyPlanningPalScreens.AddAppointmentScreen.name) }, backgroundColor = MaterialTheme.colors.primary) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }
         }
@@ -33,7 +34,7 @@ fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel 
     LazyColumn {
         items(items = appointmentViewModel.getDates()) { date ->
             AppointmentWithMonthAndDay(
-                date = date,
+                stringDate = date,
                 appointments = appointmentViewModel.getAppointments(),
                 onItemClick = { appointment ->
                     appointmentViewModel.removeAppointment(appointment)

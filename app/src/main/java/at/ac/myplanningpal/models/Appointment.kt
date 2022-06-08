@@ -3,9 +3,9 @@ package at.ac.myplanningpal.models
 import java.time.LocalDate
 
 data class Appointment(
-    val id: String,
+    val id: Long? = null,
     val title: String,
-    val date: LocalDate,
+    val date: String,
     val eventName: String,
     val eventDescription: String? = null,
     val alarm: Boolean = false)
@@ -13,50 +13,50 @@ data class Appointment(
 
 fun getAppointmentsFromModel(): List<Appointment> {
     return listOf(
-        Appointment(id = "tt0499549",
+        Appointment(
             title = "Avatar",
-            date = LocalDate.now().minusDays(1),
+            date = LocalDate.now().minusDays(1).toString(),
             eventName = "test",
             eventDescription = "test description"),
 
-        Appointment(id = "tt0416449",
+        Appointment(
             title = "300",
-            date = LocalDate.now(),
+            date = LocalDate.now().toString(),
             eventName = "test"),
 
-        Appointment(id = "tt0848228",
+        Appointment(
             title = "The Avengers",
-            date = LocalDate.now().minusDays(2),
+            date = LocalDate.now().minusDays(2).toString(),
             eventName = "test"),
 
-        Appointment(id = "tt0993846",
+        Appointment(
             title = "The Wolf of Wall Street",
-            date = LocalDate.of(2022, 1, 1),
+            date = LocalDate.of(2022, 1, 1).toString(),
             eventName = "test"),
 
-        Appointment(id = "tt0816692",
+        Appointment(
             title = "Interstellar",
-            date = LocalDate.now(),
+            date = LocalDate.now().toString(),
             eventName = "test"),
 
-        Appointment(id = "tt0944947",
+        Appointment(
             title = "Game of Thrones",
-            date = LocalDate.now().minusDays(4),
+            date = LocalDate.now().minusDays(4).toString(),
             eventName = "test"),
 
-        Appointment(id = "tt2306299",
+        Appointment(
             title = "Vikings",
-            date = LocalDate.of(2022, 1, 1),
+            date = LocalDate.of(2022, 1, 1).toString(),
             eventName = "test"),
 
-        Appointment(id = "tt0903747",
+        Appointment(
             title = "Breaking Bad",
-            date = LocalDate.of(2022, 1, 1),
+            date = LocalDate.of(2022, 1, 1).toString(),
             eventName = "test"),
 
-        Appointment(id = "tt2707408",
+        Appointment(
             title = "Narcos",
-            date = LocalDate.now(),
+            date = LocalDate.now().toString(),
             eventName = "test"),
         )
 }

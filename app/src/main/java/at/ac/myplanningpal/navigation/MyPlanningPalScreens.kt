@@ -6,5 +6,6 @@ enum class MyPlanningPalScreens {
     NoteScreen,
     CalendarListViewScreen,
     AppointmentSettingsScreen,
-    AddAppointmentScreen
+    AddAppointmentScreen,
+    AddNoteScreen
 }

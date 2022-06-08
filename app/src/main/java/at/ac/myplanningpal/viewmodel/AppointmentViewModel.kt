@@ -7,6 +7,7 @@ import at.ac.myplanningpal.models.Appointment
 import at.ac.myplanningpal.models.getAppointmentsFromModel
 import com.himanshoe.kalendar.common.data.KalendarEvent
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class AppointmentViewModel : ViewModel() {
@@ -24,10 +25,10 @@ class AppointmentViewModel : ViewModel() {
     }
 
     fun getTodaysAppointments(): List<Appointment> {
-        return getAppointmentsByDate(LocalDate.now())
+        return getAppointmentsByDate(LocalDate.now().toString())
     }
 
-    fun getAppointmentsByDate(date: LocalDate): List<Appointment> {
+    fun getAppointmentsByDate(date: String): List<Appointment> {
         val returnList = mutableListOf<Appointment>()
         for (appointment in _appointments) {
             if (appointment.date == date) returnList.add(appointment)
@@ -35,26 +36,27 @@ class AppointmentViewModel : ViewModel() {
         return returnList
     }
 
-    fun addAppointment(movie: Appointment) {
-        _appointments.add(movie)
+    fun addAppointment(appointment: Appointment) {
+        _appointments.add(appointment)
     }
 
-    fun removeAppointment(movie: Appointment) {
-        _appointments.remove(movie)
+    fun removeAppointment(appointment: Appointment) {
+        _appointments.remove(appointment)
     }
 
     fun getCalendarEvents(): List<KalendarEvent> {
         val returnList = mutableListOf<KalendarEvent>()
         for (appointment in _appointments) {
-            returnList.add(KalendarEvent(appointment.date, appointment.eventName, appointment.eventDescription))
+            val date = LocalDate.parse(appointment.date, DateTimeFormatter.ISO_LOCAL_DATE)
+            returnList.add(KalendarEvent(date, appointment.eventName, appointment.eventDescription))
         }
         return returnList
     }
 
-    fun getDates(): List<LocalDate> {
-        var dates = mutableListOf<LocalDate>()
+    fun getDates(): List<String> {
+        var dates = mutableListOf<String>()
         for (appointment in _appointments) {
-            if (!dates.toString().contains(appointment.date.toString())) {
+            if (!dates.contains(appointment.date)) {
                 dates.add(appointment.date)
             }
         }
