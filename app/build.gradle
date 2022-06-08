@@ -65,4 +65,6 @@ dependencies {
     // Calendar
     //implementation("com.himanshoe:kalendar-endlos:$cal_version")
     implementation("com.himanshoe:kalendar:$cal_version")
+
+    //implementation ("io.github.boguszpawlowski.composecalendar:composecalendar:$cal2_version")
 }

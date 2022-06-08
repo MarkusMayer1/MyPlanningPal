@@ -1,21 +1,17 @@
 package at.ac.myplanningpal.screens
 
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import at.ac.myplanningpal.widgets.BottomBarNavigation
 
 @Composable
-fun NoteScreen(navController: NavController = rememberNavController()) {
+fun NoteScreen() {
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text(text = "MyPlanningPal") })
-        },
-        bottomBar = {
-            BottomBarNavigation(navController = navController)
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ }, backgroundColor = MaterialTheme.colors.primary) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "add")
+            }
         }
     ) {
         MainContentNoteScreen()
@@ -24,5 +20,5 @@ fun NoteScreen(navController: NavController = rememberNavController()) {
 
 @Composable
 fun MainContentNoteScreen() {
-
+    Text(text = "note screen")
 }
