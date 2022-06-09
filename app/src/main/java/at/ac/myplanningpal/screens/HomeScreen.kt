@@ -27,15 +27,15 @@ fun MainContentHomeScreen(appointmentViewModel: AppointmentViewModel = viewModel
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn {
-            items(items = appointmentViewModel.getTodaysAppointments()) { appointment ->
-                AppointmentRow(
-                    appointment = appointment,
-                    onItemClick = { appointmentToDelete ->
-                        appointmentViewModel.removeAppointment(appointmentToDelete)
-                    }
-                )
-            }
-        }
+//        LazyColumn {
+//            items(items = appointmentViewModel.getTodaysAppointments()) { appointment ->
+//                AppointmentRow(
+//                    appointment = appointment,
+//                    onItemClick = { appointmentToDelete ->
+//                        appointmentViewModel.removeAppointment(appointmentToDelete)
+//                    }
+//                )
+//            }
+//        }
     }
 }

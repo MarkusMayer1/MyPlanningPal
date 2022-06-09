@@ -1,31 +1,39 @@
 package at.ac.myplanningpal.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.toMutableStateList
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import at.ac.myplanningpal.models.Note
-import at.ac.myplanningpal.models.getNotesFromModel
+import at.ac.myplanningpal.repositories.NoteRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
+class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
-class NoteViewModel : ViewModel() {
-    //private val _appointments = mutableStateListOf<Appointment>()
+    private var _notes = MutableStateFlow<List<Note>>(emptyList())
+    val notes = _notes.asStateFlow()
 
-    private var _notes = mutableStateListOf<Note>()
     init {
-        for (note in getNotesFromModel().toMutableStateList()) {
-            addNote(note)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.getAllNotes().collect { listOfNotes ->
+                _notes.value = listOfNotes
+            }
         }
     }
 
-    fun getNotes(): List<Note> {
-        return _notes
-    }
-
     fun addNote(note: Note) {
-        _notes.add(note)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addNote(note = note)
+        }
     }
 
     fun removeNote(note: Note) {
-        _notes.remove(note)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteNote(note = note)
+        }
+
     }
 }

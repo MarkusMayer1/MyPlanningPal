@@ -4,6 +4,7 @@ buildscript {
         nav_version = "2.4.1"
         cal_version = "1.0.0-RC5"
         cal2_version = "0.5.1"
+        room_version = "2.4.2"
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

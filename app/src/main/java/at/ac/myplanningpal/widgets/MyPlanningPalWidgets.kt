@@ -1,6 +1,8 @@
 package at.ac.myplanningpal.widgets
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import at.ac.myplanningpal.models.Appointment
+//import at.ac.myplanningpal.models.getAppointmentsFromModel
 import at.ac.myplanningpal.models.Note
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 
 @Composable
 fun AppointmentRow(
@@ -80,6 +84,7 @@ fun AppointmentRow(
         }
     }
 }
+
 
 @Composable
 fun AppointmentWithMonthAndDay(

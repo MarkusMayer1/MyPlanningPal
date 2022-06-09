@@ -25,21 +25,21 @@ fun CalendarListViewScreen(appointmentViewModel: AppointmentViewModel = viewMode
             }
         }
     ) {
-        MainContentCalendarListVewScreen(appointmentViewModel = appointmentViewModel)
+        //MainContentCalendarListVewScreen(appointmentViewModel = appointmentViewModel)
     }
 }
 
-@Composable
-fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel = viewModel()) {
-    LazyColumn {
-        items(items = appointmentViewModel.getDates()) { date ->
-            AppointmentWithMonthAndDay(
-                stringDate = date,
-                appointments = appointmentViewModel.getAppointments(),
-                onItemClick = { appointment ->
-                    appointmentViewModel.removeAppointment(appointment)
-                }
-            )
-        }
-    }
-}
+//@Composable
+//fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel = viewModel()) {
+//    LazyColumn {
+//        items(items = appointmentViewModel.getDates()) { date ->
+//            AppointmentWithMonthAndDay(
+//                stringDate = date,
+//                appointments = appointmentViewModel.getAppointments(),
+//                onItemClick = { appointment ->
+//                    appointmentViewModel.removeAppointment(appointment)
+//                }
+//            )
+//        }
+//    }
+//}

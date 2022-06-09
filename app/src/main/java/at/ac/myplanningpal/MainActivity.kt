@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        MyPlanningPalNavigation(navController)
+                        MyPlanningPalNavigation(navController = navController)
                     }
 
                 }
