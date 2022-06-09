@@ -1,10 +1,15 @@
 package at.ac.myplanningpal.ui.theme
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
+import at.ac.myplanningpal.dataStore
+import at.ac.myplanningpal.viewmodel.ThemeViewModel
 
 private val DarkColorPalette = darkColors(
     primary = Purple500,
@@ -29,19 +34,31 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun MyPlanningPalTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+    val context = LocalContext.current
+    val viewModel = remember { ThemeViewModel(context.dataStore) }
+    val state = viewModel.state.observeAsState()
+    val value = state.value ?: isSystemInDarkTheme()
 
+    LaunchedEffect(viewModel) { viewModel.request() }
+
+    DarkThemeValue.current.value = value
     MaterialTheme(
-        colors = colors,
+        colors = if (value) DarkColorPalette else LightColorPalette,
         typography = Typography,
         shapes = Shapes,
         content = content
     )
 }
+
+@Composable
+@ReadOnlyComposable
+fun isDarkTheme() = DarkThemeValue.current.value
+
+@SuppressLint("CompositionLocalNaming")
+private val DarkThemeValue = compositionLocalOf { mutableStateOf(false) }
+
+@Composable
+@ReadOnlyComposable
+infix fun <T> T.orInLightTheme(other: T): T = if (isDarkTheme()) this else other

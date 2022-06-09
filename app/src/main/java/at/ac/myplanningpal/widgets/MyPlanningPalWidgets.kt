@@ -24,6 +24,8 @@ import java.time.format.DateTimeFormatter
 fun AppointmentRow(
     appointment: Appointment,
     onItemClick: (Appointment) -> Unit = {}
+    /*onItemEditClick: (Appointment) -> Unit = {},
+    onItemDeleteClick: (Appointment) -> Unit = {}*/
 ) {
     /*var showExtendedMovieRow by remember {
         mutableStateOf(false)
@@ -80,6 +82,22 @@ fun AppointmentRow(
                         tint = MaterialTheme.colors.secondary
                     )
                 }
+                /*Column {
+                    IconButton(onClick = { onItemEditClick(appointment) }) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "edit",
+                            tint = MaterialTheme.colors.secondary
+                        )
+                    }
+                    IconButton(onClick = { onItemDeleteClick(appointment) }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "delete",
+                            tint = MaterialTheme.colors.secondary
+                        )
+                    }
+                }*/
             }
         }
     }
@@ -91,6 +109,8 @@ fun AppointmentWithMonthAndDay(
     stringDate: String,
     appointments: List<Appointment>,
     onItemClick: (Appointment) -> Unit = {}
+    /*onItemEditClick: (Appointment) -> Unit = {},
+    onItemDeleteClick: (Appointment) -> Unit = {}*/
 ) {
     val date = LocalDate.parse(stringDate, DateTimeFormatter.ISO_LOCAL_DATE)
 
@@ -130,6 +150,8 @@ fun AppointmentWithMonthAndDay(
 fun NoteRow(
     note: Note,
     onItemClick: (Note) -> Unit = {}
+    /*onItemEditClick: (Note) -> Unit = {},
+    onItemDeleteClick: (Note) -> Unit = {}*/
 ) {
     Card(
         modifier = Modifier
@@ -170,6 +192,22 @@ fun NoteRow(
                         tint = MaterialTheme.colors.secondary
                     )
                 }
+                /*Column {
+                    IconButton(onClick = { onItemEditClick(note) }) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "edit",
+                            tint = MaterialTheme.colors.secondary
+                        )
+                    }
+                    IconButton(onClick = { onItemDeleteClick(note) }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "delete",
+                            tint = MaterialTheme.colors.secondary
+                        )
+                    }
+                }*/
             }
         }
     }
