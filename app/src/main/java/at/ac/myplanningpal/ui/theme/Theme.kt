@@ -13,13 +13,13 @@ import at.ac.myplanningpal.viewmodel.ThemeViewModel
 
 private val DarkColorPalette = darkColors(
     primary = Purple500,
-    primaryVariant = Purple700,
+    primaryVariant = DarkGrey,
     secondary = Teal200
 )
 
 private val LightColorPalette = lightColors(
     primary = Purple500,
-    primaryVariant = Purple700,
+    primaryVariant = LightGrey,
     secondary = Teal200
 
     /* Other default colors to override

@@ -1,6 +1,5 @@
 package at.ac.myplanningpal.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.ac.myplanningpal.models.Note
@@ -8,7 +7,6 @@ import at.ac.myplanningpal.repositories.NoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
@@ -34,6 +32,5 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteNote(note = note)
         }
-
     }
 }

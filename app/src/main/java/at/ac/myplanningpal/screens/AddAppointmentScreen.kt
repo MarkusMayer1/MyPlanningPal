@@ -78,7 +78,15 @@ fun MainContentAddAppointmentScreen(
         val mDatePickerDialog = DatePickerDialog(
             context,
             { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-                date.value = "$year-${month + 1}-$dayOfMonth"
+                if (month < 10 && dayOfMonth < 10) {
+                    date.value = "$year-0${month + 1}-0$dayOfMonth"
+                } else if (month < 10) {
+                    date.value = "$year-0${month + 1}-$dayOfMonth"
+                } else if (dayOfMonth < 10) {
+                    date.value = "$year-${month + 1}-0$dayOfMonth"
+                } else {
+                    date.value = "$year-${month + 1}-$dayOfMonth"
+                }
             }, year, month, day
         )
 

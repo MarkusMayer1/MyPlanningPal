@@ -38,22 +38,17 @@ class AppointmentViewModel(
 //    }
 //
 //
-//    suspend fun getTodaysAppointments(): List<Appointment> {
-//        return getAppointmentsByDate(LocalDate.now())
-//    }
-//
-//    suspend fun getAppointmentsByDate(date: LocalDate): List<Appointment> {
-//        val returnList = mutableListOf<Appointment>()
-//        val allAppointments: List<Appointment>
-//        appointments.collect { items ->
-//            val allAppointments = items
-//            for (appointment in allAppointments) {
-//                if (appointment.date == date.toString()) returnList.add(appointment)
-//            }
-//        }
-//
-//        return returnList
-//    }
+    fun getTodaysAppointments(): List<Appointment> {
+        return getAppointmentsByDate(LocalDate.now().toString())
+    }
+
+    fun getAppointmentsByDate(date: String): List<Appointment> {
+        val returnList = mutableListOf<Appointment>()
+        for (appointment in _appointments.value) {
+            if (appointment.date == date) returnList.add(appointment)
+        }
+        return returnList
+    }
 
     fun addAppointment(appointment: Appointment) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -83,7 +78,7 @@ class AppointmentViewModel(
         Log.d("returnListdasdas: ", returnList.toString())
         return returnList
     }
-//
+
     fun getDates(): List<LocalDate> {
         var dates = mutableListOf<LocalDate>()
         for (appointment in _appointments.value) {

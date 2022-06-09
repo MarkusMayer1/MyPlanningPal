@@ -57,7 +57,7 @@ fun AppointmentRow(
                     text = "Event Name: ${appointment.eventName}",
                     style = MaterialTheme.typography.caption
                 )
-                if (appointment.eventDescription != null) {
+                if (!appointment.eventDescription.isNullOrEmpty()) {
                     Text(
                         text = "Event Description: ${appointment.eventDescription}",
                         style = MaterialTheme.typography.caption

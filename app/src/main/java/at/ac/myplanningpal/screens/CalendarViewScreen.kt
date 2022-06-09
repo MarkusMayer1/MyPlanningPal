@@ -6,6 +6,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -37,13 +39,14 @@ fun MainContentCalendarView(appointmentViewModel: AppointmentViewModel = viewMod
         kalendarEvents = appointmentViewModel.getCalendarEvents(),
         kalendarType = KalendarType.Firey(),
         kalendarStyle = KalendarStyle(
-            kalendarBackgroundColor = MaterialTheme.colors.primaryVariant,
+            kalendarBackgroundColor = MaterialTheme.colors.background,
             kalendarColor = MaterialTheme.colors.background,
             kalendarSelector = KalendarSelector.Circle(
-                selectedColor = MaterialTheme.colors.primaryVariant,
-                defaultColor = MaterialTheme.colors.background,
+                selectedColor = MaterialTheme.colors.primary,
+                defaultColor = MaterialTheme.colors.primaryVariant,
                 todayColor = MaterialTheme.colors.primaryVariant
-            )
+            ),
+            elevation = 10.dp
         ),
         onCurrentDayClick = { localDate, kalendarEvent ->
             //handle the date click listener
