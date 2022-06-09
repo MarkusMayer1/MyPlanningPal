@@ -1,5 +1,6 @@
 package at.ac.myplanningpal.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -55,30 +56,45 @@ class AppointmentViewModel(
 //    }
 
     fun addAppointment(appointment: Appointment) {
-        repository.addAppointment(appointment = appointment)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addAppointment(appointment = appointment)
+        }
+
     }
 
     fun removeAppointment(appointment: Appointment) {
-        repository.deleteAppointment(appointment = appointment)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAppointment(appointment = appointment)
+        }
     }
 
-//    fun getCalendarEvents(): List<KalendarEvent> {
-//        val returnList = mutableListOf<KalendarEvent>()
-//        for (appointment in _appointments) {
-//            returnList.add(KalendarEvent(appointment.date, appointment.eventName, appointment.eventDescription))
-//        }
-//        return returnList
-//    }
+    fun getCalendarEvents(): List<KalendarEvent> {
+        val returnList = mutableListOf<KalendarEvent>()
+        for (appointment in _appointments.value) {
+            try {
+                val datess = LocalDate.parse(appointment.date, DateTimeFormatter.ISO_LOCAL_DATE)
+                //Log.d("parsed LocalDate", datess.toString())
+                returnList.add(KalendarEvent(datess, appointment.eventName, appointment.eventDescription))
+            } catch(e: Exception) {
+                Log.d("LocalDate parsing error", e.message.toString())
+            }
+
+        }
+        Log.d("returnListdasdas: ", returnList.toString())
+        return returnList
+    }
 //
-//    fun getDates(): List<LocalDate> {
-//        var dates = mutableListOf<LocalDate>()
-//        for (appointment in _appointments) {
-//            if (!dates.toString().contains(appointment.date.toString())) {
-//                dates.add(appointment.date)
-//            }
-//        }
-//        dates = dates.distinct().toMutableList()
-//        dates.sort()
-//        return dates
-//    }
+    fun getDates(): List<LocalDate> {
+        var dates = mutableListOf<LocalDate>()
+        for (appointment in _appointments.value) {
+            if (!dates.toString().contains(appointment.date.toString())) {
+                val datess = LocalDate.parse(appointment.date, DateTimeFormatter.ISO_LOCAL_DATE)
+                //Log.d("parsed LocalDate", datess.toString())
+                dates.add(datess)
+            }
+        }
+        dates = dates.distinct().toMutableList()
+        dates.sort()
+        return dates
+    }
 }

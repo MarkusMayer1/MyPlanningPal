@@ -9,9 +9,12 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import at.ac.myplanningpal.models.Appointment
 import at.ac.myplanningpal.navigation.MyPlanningPalScreens
 import at.ac.myplanningpal.viewmodel.AppointmentViewModel
 import at.ac.myplanningpal.widgets.AppointmentWithMonthAndDay
@@ -25,21 +28,22 @@ fun CalendarListViewScreen(appointmentViewModel: AppointmentViewModel = viewMode
             }
         }
     ) {
-        //MainContentCalendarListVewScreen(appointmentViewModel = appointmentViewModel)
+        MainContentCalendarListVewScreen(appointmentViewModel = appointmentViewModel)
     }
 }
 
-//@Composable
-//fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel = viewModel()) {
-//    LazyColumn {
-//        items(items = appointmentViewModel.getDates()) { date ->
-//            AppointmentWithMonthAndDay(
-//                stringDate = date,
-//                appointments = appointmentViewModel.getAppointments(),
-//                onItemClick = { appointment ->
-//                    appointmentViewModel.removeAppointment(appointment)
-//                }
-//            )
-//        }
-//    }
-//}
+@Composable
+fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel = viewModel()) {
+    val appointments: List<Appointment> by appointmentViewModel.appointments.collectAsState()
+    LazyColumn {
+        items(items = appointmentViewModel.getDates()) { date ->
+            AppointmentWithMonthAndDay(
+                stringDate = date.toString(),
+                appointments = appointments,
+                onItemClick = { appointment ->
+                    appointmentViewModel.removeAppointment(appointment)
+                }
+            )
+        }
+    }
+}
