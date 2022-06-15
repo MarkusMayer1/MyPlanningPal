@@ -57,7 +57,7 @@ fun MainContentAddAppointmentScreen(
     var title by remember { mutableStateOf(appointment?.title ?: "") }
     var date by remember { mutableStateOf(appointment?.date ?: LocalDate.now().toString()) }
     var eventDescription by remember { mutableStateOf(appointment?.eventDescription ?: "") }
-    var color by remember { mutableStateOf("") }
+    var color by remember { mutableStateOf(appointment?.color ?: "") }
     var alarm by remember { mutableStateOf(appointment?.alarm ?: false) }
 
     Column(
@@ -173,10 +173,6 @@ fun MainContentAddAppointmentScreen(
                 }
             }
         }
-
-
-
-
 
         OutlinedTextField(
             value = eventDescription,
