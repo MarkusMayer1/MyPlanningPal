@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.Note
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -147,7 +149,7 @@ class MainActivity : ComponentActivity() {
                             )
 
                             BottomNavigationItem(
-                                icon = { Icon(imageVector = Icons.Default.List, contentDescription = "CalendarListViewScreen") },
+                                icon = { Icon(imageVector = Icons.Default.ViewList, contentDescription = "CalendarListViewScreen") },
                                 selected = currentRoute == MyPlanningPalScreens.CalendarListViewScreen.name,
                                 onClick = {
                                     navController.navigate(route = MyPlanningPalScreens.CalendarListViewScreen.name)
@@ -155,7 +157,7 @@ class MainActivity : ComponentActivity() {
                             )
 
                             BottomNavigationItem(
-                                icon = { Icon(imageVector = Icons.Default.Info, contentDescription = "NoteScreen") },
+                                icon = { Icon(imageVector = Icons.Default.Description, contentDescription = "NoteScreen") },
                                 selected = currentRoute == MyPlanningPalScreens.NoteScreen.name,
                                 onClick = {
                                     navController.navigate(route = MyPlanningPalScreens.NoteScreen.name)

@@ -48,7 +48,8 @@ fun MainContentCalendarView(appointmentViewModel: AppointmentViewModel = viewMod
                 kalendarSelector = KalendarSelector.Circle(
                     selectedColor = MaterialTheme.colors.primary,
                     defaultColor = MaterialTheme.colors.primaryVariant,
-                    todayColor = MaterialTheme.colors.primaryVariant
+                    todayColor = MaterialTheme.colors.primaryVariant,
+                    defaultTextColor = MaterialTheme.colors.secondaryVariant
                 ),
                 elevation = 10.dp
             ),

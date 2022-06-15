@@ -1,5 +1,6 @@
 package at.ac.myplanningpal.screens
 
+import android.content.Context.ALARM_SERVICE
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,7 +27,10 @@ fun HomeScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navCont
 
 @Composable
 fun MainContentHomeScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController) {
-    Column(Modifier.fillMaxSize().padding(top =  10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(top = 10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Today's Appointments: ", style = MaterialTheme.typography.h5)
 
         Divider()

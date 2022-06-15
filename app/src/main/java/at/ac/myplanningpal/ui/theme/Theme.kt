@@ -14,13 +14,15 @@ import at.ac.myplanningpal.viewmodel.ThemeViewModel
 private val DarkColorPalette = darkColors(
     primary = Purple500,
     primaryVariant = DarkGrey,
-    secondary = Teal200
+    secondary = Teal200,
+    secondaryVariant = Teal200
 )
 
 private val LightColorPalette = lightColors(
     primary = Purple500,
     primaryVariant = LightGrey,
-    secondary = Teal200
+    secondary = Teal200,
+    secondaryVariant = DarkGrey
 
     /* Other default colors to override
     background = Color.White,
