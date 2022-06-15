@@ -1,6 +1,7 @@
 package at.ac.myplanningpal.widgets
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,9 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import at.ac.myplanningpal.models.Appointment
@@ -64,13 +68,27 @@ fun AppointmentRow(
                     .padding(10.dp)
                     .fillMaxWidth(0.8f)
             ) {
+                when (appointment.color) {
+                    "Green" -> {
+                        Box(
+                            modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Green)
+                        )
+                    }
+                    "Yellow" -> {
+                        Box(
+                            modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFE500))
+                        )
+                    }
+                    "Red" -> {
+                        Box(
+                            modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Red)
+                        )
+                    }
+                }
+
                 Text(text = appointment.title, style = MaterialTheme.typography.h6)
                 Text(
                     text = "Date: ${appointment.date}",
-                    style = MaterialTheme.typography.caption
-                )
-                Text(
-                    text = "Event Name: ${appointment.eventName}",
                     style = MaterialTheme.typography.caption
                 )
                 if (!appointment.eventDescription.isNullOrEmpty()) {
@@ -91,13 +109,6 @@ fun AppointmentRow(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                /*IconButton(onClick = { onItemClick(appointment) }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "delete",
-                        tint = MaterialTheme.colors.secondary
-                    )
-                }*/
                 Column {
                     IconButton(onClick = { onItemEditClick(appointment) }) {
                         Icon(

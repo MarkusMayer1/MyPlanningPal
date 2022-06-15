@@ -10,7 +10,7 @@ import at.ac.myplanningpal.models.Note
 
 @Database(
     entities = [Note::class, Appointment::class],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class MyPlanningPalDB: RoomDatabase() {

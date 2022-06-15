@@ -125,7 +125,6 @@ class MainActivity : ComponentActivity() {
                     },
                     bottomBar = {
                         BottomNavigation(
-                            backgroundColor = MaterialTheme.colors.primary,
                             contentColor = Color.White
                         ) {
                             val navBackStackEntry by navController.currentBackStackEntryAsState()

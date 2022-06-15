@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,10 +52,12 @@ fun MainContentAddAppointmentScreen(
     appointmentViewModel: AppointmentViewModel = viewModel(),
     appointment: Appointment? = null
 ) {
+    var showMenu by remember { mutableStateOf(false) }
+
     var title by remember { mutableStateOf(appointment?.title ?: "") }
     var date by remember { mutableStateOf(appointment?.date ?: LocalDate.now().toString()) }
-    var eventName by remember { mutableStateOf(appointment?.eventName ?: "") }
     var eventDescription by remember { mutableStateOf(appointment?.eventDescription ?: "") }
+    var color by remember { mutableStateOf("") }
     var alarm by remember { mutableStateOf(appointment?.alarm ?: false) }
 
     Column(
@@ -111,13 +115,68 @@ fun MainContentAddAppointmentScreen(
             }
         }
 
-        OutlinedTextField(
-            value = eventName,
-            label = { Text(text = "Event name:") },
-            onValueChange = {
-                eventName = it
+        Column {
+            OutlinedTextField(
+                modifier = Modifier.clickable { showMenu = !showMenu },
+                enabled = false,
+                value = color,
+                label = { Text(text = "Color:") },
+                onValueChange = {
+                    color = it
+                }
+            )
+
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }) {
+
+                DropdownMenuItem(onClick = {
+                    color = "Red"
+                    showMenu = false
+                }) {
+                    Row {
+                        Text(
+                            text = "Red",
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .width(100.dp)
+                        )
+                    }
+                }
+
+                DropdownMenuItem(onClick = {
+                    color = "Yellow"
+                    showMenu = false
+                }) {
+                    Row {
+                        Text(
+                            text = "Yellow",
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .width(100.dp)
+                        )
+                    }
+                }
+
+                DropdownMenuItem(onClick = {
+                    color = "Green"
+                    showMenu = false
+                }) {
+                    Row {
+                        Text(
+                            text = "Green",
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .width(100.dp)
+                        )
+                    }
+                }
             }
-        )
+        }
+
+
+
+
 
         OutlinedTextField(
             value = eventDescription,
@@ -136,11 +195,12 @@ fun MainContentAddAppointmentScreen(
             modifier = Modifier.padding(16.dp),
             onClick = {
                 if (appointment == null) {
-                    if(title.isNotEmpty() && eventName.isNotEmpty()){
+                    if(title.isNotEmpty()){
                         val newAppointment = Appointment(
                             title = title,
                             date =  date,
-                            eventName = eventName,
+                            eventName = title,
+                            color = color,
                             eventDescription = eventDescription,
                             alarm = alarm)
 
@@ -148,10 +208,11 @@ fun MainContentAddAppointmentScreen(
                         navController.popBackStack()
                     }
                 } else {
-                    if(title.isNotEmpty() && eventName.isNotEmpty()) {
+                    if(title.isNotEmpty()) {
                         appointment.title = title
                         appointment.date = date
-                        appointment.eventName = eventName
+                        appointment.eventName = title
+                        appointment.color = color
                         appointment.eventDescription = eventDescription
                         appointment.alarm = alarm
 
@@ -159,10 +220,8 @@ fun MainContentAddAppointmentScreen(
                         navController.popBackStack()
                     }
                 }
-
-
-            }) {
-
+            }
+        ) {
             if (appointment == null) {
                 Text( text = "Save")
             } else {

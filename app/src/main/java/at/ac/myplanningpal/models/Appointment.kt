@@ -11,6 +11,7 @@ data class Appointment(
     var title: String,
     var date: String,
     var eventName: String,
+    var color: String,
     var eventDescription: String? = null,
     var alarm: Boolean)
 

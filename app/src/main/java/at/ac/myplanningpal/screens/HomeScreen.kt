@@ -1,14 +1,13 @@
 package at.ac.myplanningpal.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,12 +26,12 @@ fun HomeScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navCont
 
 @Composable
 fun MainContentHomeScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController) {
-    Column {
+    Column(Modifier.fillMaxSize().padding(top =  10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Today's Appointments: ", style = MaterialTheme.typography.h5)
 
         Divider()
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         val appointments: List<Appointment> by appointmentViewModel.appointments.collectAsState()
 

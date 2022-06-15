@@ -1,9 +1,12 @@
 package at.ac.myplanningpal.screens
 
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -30,22 +33,29 @@ fun CalendarViewScreen(appointmentViewModel: AppointmentViewModel = viewModel(),
 
 @Composable
 fun MainContentCalendarView(appointmentViewModel: AppointmentViewModel = viewModel()) {
-    Kalendar(
-        kalendarEvents = appointmentViewModel.getCalendarEvents(),
-        kalendarType = KalendarType.Firey(),
-        kalendarStyle = KalendarStyle(
-            kalendarBackgroundColor = MaterialTheme.colors.background,
-            kalendarColor = MaterialTheme.colors.background,
-            kalendarSelector = KalendarSelector.Circle(
-                selectedColor = MaterialTheme.colors.primary,
-                defaultColor = MaterialTheme.colors.primaryVariant,
-                todayColor = MaterialTheme.colors.primaryVariant
+    Column(Modifier.fillMaxSize().padding(top =  10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "Calendar: ", style = MaterialTheme.typography.h5)
+
+        Divider()
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Kalendar(
+            kalendarEvents = appointmentViewModel.getCalendarEvents(),
+            kalendarType = KalendarType.Firey(),
+            kalendarStyle = KalendarStyle(
+                kalendarBackgroundColor = MaterialTheme.colors.background,
+                kalendarColor = MaterialTheme.colors.background,
+                kalendarSelector = KalendarSelector.Circle(
+                    selectedColor = MaterialTheme.colors.primary,
+                    defaultColor = MaterialTheme.colors.primaryVariant,
+                    todayColor = MaterialTheme.colors.primaryVariant
+                ),
+                elevation = 10.dp
             ),
-            elevation = 10.dp
-        ),
-        onCurrentDayClick = { localDate, kalendarEvent ->
-            //handle the date click listener
-        }, errorMessage = {
-            //Handle the error if any
-        })
+            onCurrentDayClick = { localDate, kalendarEvent ->
+                //handle the date click listener
+            }, errorMessage = {
+                //Handle the error if any
+            })
+    }
 }

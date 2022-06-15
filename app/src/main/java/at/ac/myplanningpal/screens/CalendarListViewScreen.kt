@@ -1,16 +1,17 @@
 package at.ac.myplanningpal.screens
 
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -40,24 +41,31 @@ fun CalendarListViewScreen(appointmentViewModel: AppointmentViewModel = viewMode
 
 @Composable
 fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController = rememberNavController()) {
-    val appointments: List<Appointment> by appointmentViewModel.appointments.collectAsState()
+    Column(Modifier.fillMaxSize().padding(top =  10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "Appointments: ", style = MaterialTheme.typography.h5)
 
-    val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-    val jsonAdapter = moshi.adapter(Appointment::class.java).lenient()
+        Divider()
 
-    LazyColumn {
-        items(items = appointmentViewModel.getDates()) { date ->
-            AppointmentWithMonthAndDay(
-                stringDate = date.toString(),
-                appointments = appointments,
-                onItemEditClick = { editAppointment ->
-                    val appointmentJson = jsonAdapter.toJson(editAppointment)
-                    navController.navigate(route = MyPlanningPalScreens.AddAppointmentScreen.name + "?appointment=$appointmentJson")
-                },
-                onItemDeleteClick = { deleteAppointment ->
-                    appointmentViewModel.removeAppointment(deleteAppointment)
-                }
-            )
+        Spacer(modifier = Modifier.height(10.dp))
+        val appointments: List<Appointment> by appointmentViewModel.appointments.collectAsState()
+
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val jsonAdapter = moshi.adapter(Appointment::class.java).lenient()
+
+        LazyColumn {
+            items(items = appointmentViewModel.getDates()) { date ->
+                AppointmentWithMonthAndDay(
+                    stringDate = date.toString(),
+                    appointments = appointments,
+                    onItemEditClick = { editAppointment ->
+                        val appointmentJson = jsonAdapter.toJson(editAppointment)
+                        navController.navigate(route = MyPlanningPalScreens.AddAppointmentScreen.name + "?appointment=$appointmentJson")
+                    },
+                    onItemDeleteClick = { deleteAppointment ->
+                        appointmentViewModel.removeAppointment(deleteAppointment)
+                    }
+                )
+            }
         }
     }
 }
