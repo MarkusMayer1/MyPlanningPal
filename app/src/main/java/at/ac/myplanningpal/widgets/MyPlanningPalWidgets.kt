@@ -59,6 +59,23 @@ fun AppointmentRow(
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = 6.dp
     ) {
+        when (appointment.color) {
+        "Green" -> {
+            Box(
+                modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Green)
+            )
+        }
+        "Yellow" -> {
+            Box(
+                modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFE500))
+            )
+        }
+        "Red" -> {
+            Box(
+                modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Red)
+            )
+        }
+    }
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -68,24 +85,6 @@ fun AppointmentRow(
                     .padding(10.dp)
                     .fillMaxWidth(0.8f)
             ) {
-                when (appointment.color) {
-                    "Green" -> {
-                        Box(
-                            modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Green)
-                        )
-                    }
-                    "Yellow" -> {
-                        Box(
-                            modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFE500))
-                        )
-                    }
-                    "Red" -> {
-                        Box(
-                            modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Red)
-                        )
-                    }
-                }
-
                 Text(text = appointment.title, style = MaterialTheme.typography.h6)
                 Text(
                     text = "Date: ${appointment.date}",
@@ -189,10 +188,26 @@ fun NoteRow(
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = 6.dp
     ) {
+        when (note.color) {
+            "Green" -> {
+                Box(
+                    modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Green)
+                )
+            }
+            "Yellow" -> {
+                Box(
+                    modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFE500))
+                )
+            }
+            "Red" -> {
+                Box(
+                    modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Red)
+                )
+            }
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Column(
                 modifier = Modifier
                     .padding(10.dp)

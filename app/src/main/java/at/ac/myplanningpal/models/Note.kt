@@ -11,6 +11,7 @@ data class Note(
     var title: String,
     var description: String,
     var date: String,
+    var color: String,
 )
 
 //fun getNotesFromModel(): List<Note> {

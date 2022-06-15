@@ -3,10 +3,7 @@ package at.ac.myplanningpal.screens
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -50,9 +47,12 @@ fun MainContentAddNoteScreen(
     noteViewModel: NoteViewModel = viewModel(),
     note: Note? = null
 ) {
+    var showMenu by remember { mutableStateOf(false) }
+
     var title by remember { mutableStateOf(note?.title ?: "") }
     var date by remember { mutableStateOf(note?.date ?: LocalDate.now().toString()) }
     var description by remember { mutableStateOf(note?.description ?: "") }
+    var color by remember { mutableStateOf(note?.color ?: "") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -109,6 +109,65 @@ fun MainContentAddNoteScreen(
             }
         }
 
+        Column {
+            OutlinedTextField(
+                modifier = Modifier.clickable { showMenu = !showMenu },
+                enabled = false,
+                value = color,
+                label = { Text(text = "Color:") },
+                onValueChange = {
+                    color = it
+                }
+            )
+
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }) {
+
+                DropdownMenuItem(onClick = {
+                    color = "Red"
+                    showMenu = false
+                }) {
+                    Row {
+                        Text(
+                            text = "Red",
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .width(100.dp)
+                        )
+                    }
+                }
+
+                DropdownMenuItem(onClick = {
+                    color = "Yellow"
+                    showMenu = false
+                }) {
+                    Row {
+                        Text(
+                            text = "Yellow",
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .width(100.dp)
+                        )
+                    }
+                }
+
+                DropdownMenuItem(onClick = {
+                    color = "Green"
+                    showMenu = false
+                }) {
+                    Row {
+                        Text(
+                            text = "Green",
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .width(100.dp)
+                        )
+                    }
+                }
+            }
+        }
+
         OutlinedTextField(
             value = description,
             label = { Text(text = "Description:") },
@@ -125,7 +184,8 @@ fun MainContentAddNoteScreen(
                         val newNote = Note(
                             title = title,
                             date =  date,
-                            description = description)
+                            description = description,
+                            color = color)
 
                         noteViewModel.addNote(note = newNote)
                         navController.popBackStack()
