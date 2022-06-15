@@ -18,6 +18,12 @@ import at.ac.myplanningpal.models.Appointment
 import at.ac.myplanningpal.navigation.MyPlanningPalScreens
 import at.ac.myplanningpal.viewmodel.AppointmentViewModel
 import at.ac.myplanningpal.widgets.AppointmentWithMonthAndDay
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CalendarListViewScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController = rememberNavController()) {
@@ -28,20 +34,28 @@ fun CalendarListViewScreen(appointmentViewModel: AppointmentViewModel = viewMode
             }
         }
     ) {
-        MainContentCalendarListVewScreen(appointmentViewModel = appointmentViewModel)
+        MainContentCalendarListVewScreen(appointmentViewModel = appointmentViewModel, navController = navController)
     }
 }
 
 @Composable
-fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel = viewModel()) {
+fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController = rememberNavController()) {
     val appointments: List<Appointment> by appointmentViewModel.appointments.collectAsState()
+
+    val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    val jsonAdapter = moshi.adapter(Appointment::class.java).lenient()
+
     LazyColumn {
         items(items = appointmentViewModel.getDates()) { date ->
             AppointmentWithMonthAndDay(
                 stringDate = date.toString(),
                 appointments = appointments,
-                onItemClick = { appointment ->
-                    appointmentViewModel.removeAppointment(appointment)
+                onItemEditClick = { editAppointment ->
+                    val appointmentJson = jsonAdapter.toJson(editAppointment)
+                    navController.navigate(route = MyPlanningPalScreens.AddAppointmentScreen.name + "?appointment=$appointmentJson")
+                },
+                onItemDeleteClick = { deleteAppointment ->
+                    appointmentViewModel.removeAppointment(deleteAppointment)
                 }
             )
         }

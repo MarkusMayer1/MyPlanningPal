@@ -1,8 +1,7 @@
 package at.ac.myplanningpal.widgets
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -14,18 +13,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import at.ac.myplanningpal.models.Appointment
-//import at.ac.myplanningpal.models.getAppointmentsFromModel
 import at.ac.myplanningpal.models.Note
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.math.log
+
+@Composable
+fun TodaysAppointmentRow(
+    appointment: Appointment,
+    onItemEditClick: (Appointment) -> Unit = {},
+    onItemDeleteClick: (Appointment) -> Unit = {}
+) {
+    Log.d("appointment date: ", appointment.date)
+    Log.d("current date", LocalDate.now().toString())
+    if (appointment.date == LocalDate.now().toString()) {
+        AppointmentRow(
+            appointment = appointment,
+            onItemEditClick = onItemEditClick,
+            onItemDeleteClick = onItemDeleteClick
+        )
+    }
+}
 
 
 @Composable
 fun AppointmentRow(
     appointment: Appointment,
-    onItemClick: (Appointment) -> Unit = {}
-    /*onItemEditClick: (Appointment) -> Unit = {},
-    onItemDeleteClick: (Appointment) -> Unit = {}*/
+    onItemEditClick: (Appointment) -> Unit = {},
+    onItemDeleteClick: (Appointment) -> Unit = {}
 ) {
     /*var showExtendedMovieRow by remember {
         mutableStateOf(false)
@@ -75,14 +91,14 @@ fun AppointmentRow(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                IconButton(onClick = { onItemClick(appointment) }) {
+                /*IconButton(onClick = { onItemClick(appointment) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "delete",
                         tint = MaterialTheme.colors.secondary
                     )
-                }
-                /*Column {
+                }*/
+                Column {
                     IconButton(onClick = { onItemEditClick(appointment) }) {
                         Icon(
                             imageVector = Icons.Default.Edit,
@@ -97,7 +113,7 @@ fun AppointmentRow(
                             tint = MaterialTheme.colors.secondary
                         )
                     }
-                }*/
+                }
             }
         }
     }
@@ -108,9 +124,8 @@ fun AppointmentRow(
 fun AppointmentWithMonthAndDay(
     stringDate: String,
     appointments: List<Appointment>,
-    onItemClick: (Appointment) -> Unit = {}
-    /*onItemEditClick: (Appointment) -> Unit = {},
-    onItemDeleteClick: (Appointment) -> Unit = {}*/
+    onItemEditClick: (Appointment) -> Unit = {},
+    onItemDeleteClick: (Appointment) -> Unit = {}
 ) {
     val date = LocalDate.parse(stringDate, DateTimeFormatter.ISO_LOCAL_DATE)
 
@@ -134,7 +149,10 @@ fun AppointmentWithMonthAndDay(
             }
 
             for (appointment in appointmentsByDate) {
-                AppointmentRow(appointment = appointment, onItemClick = onItemClick)
+                AppointmentRow(
+                    appointment = appointment,
+                    onItemEditClick = onItemEditClick,
+                    onItemDeleteClick = onItemDeleteClick)
             }
         }
     }
@@ -149,9 +167,8 @@ fun AppointmentWithMonthAndDay(
 @Composable
 fun NoteRow(
     note: Note,
-    onItemClick: (Note) -> Unit = {}
-    /*onItemEditClick: (Note) -> Unit = {},
-    onItemDeleteClick: (Note) -> Unit = {}*/
+    onItemEditClick: (Note) -> Unit = {},
+    onItemDeleteClick: (Note) -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -185,14 +202,7 @@ fun NoteRow(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                IconButton(onClick = { onItemClick(note) }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "delete",
-                        tint = MaterialTheme.colors.secondary
-                    )
-                }
-                /*Column {
+                Column {
                     IconButton(onClick = { onItemEditClick(note) }) {
                         Icon(
                             imageVector = Icons.Default.Edit,
@@ -207,7 +217,7 @@ fun NoteRow(
                             tint = MaterialTheme.colors.secondary
                         )
                     }
-                }*/
+                }
             }
         }
     }

@@ -8,9 +8,9 @@ data class Note(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
 
-    val title: String,
-    val description: String,
-    val date: String,
+    var title: String,
+    var description: String,
+    var date: String,
 )
 
 //fun getNotesFromModel(): List<Note> {

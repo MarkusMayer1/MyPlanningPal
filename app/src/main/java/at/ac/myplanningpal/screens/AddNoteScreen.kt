@@ -24,7 +24,10 @@ import java.time.LocalDate
 import java.util.*
 
 @Composable
-fun AddNoteScreen(noteViewModel: NoteViewModel = viewModel(), navController: NavController = rememberNavController()) {
+fun AddNoteScreen(
+    noteViewModel: NoteViewModel = viewModel(),
+    navController: NavController = rememberNavController(),
+    note: Note? = null) {
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -37,18 +40,19 @@ fun AddNoteScreen(noteViewModel: NoteViewModel = viewModel(), navController: Nav
             })
         }
     ) {
-        MainContentAddNoteScreen(navController = navController, noteViewModel = noteViewModel)
+        MainContentAddNoteScreen(navController = navController, noteViewModel = noteViewModel, note = note)
     }
 }
 
 @Composable
 fun MainContentAddNoteScreen(
     navController: NavController = rememberNavController(),
-    noteViewModel: NoteViewModel = viewModel()
+    noteViewModel: NoteViewModel = viewModel(),
+    note: Note? = null
 ) {
-    var title by remember { mutableStateOf("") }
-    var date = remember { mutableStateOf(LocalDate.now().toString()) }
-    var description by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf(note?.title ?: "") }
+    var date by remember { mutableStateOf(note?.date ?: LocalDate.now().toString()) }
+    var description by remember { mutableStateOf(note?.description ?: "") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -80,13 +84,13 @@ fun MainContentAddNoteScreen(
             context,
             { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
                 if (month < 10 && dayOfMonth < 10) {
-                    date.value = "$year-0${month + 1}-0$dayOfMonth"
+                    date = "$year-0${month + 1}-0$dayOfMonth"
                 } else if (month < 10) {
-                    date.value = "$year-0${month + 1}-$dayOfMonth"
+                    date = "$year-0${month + 1}-$dayOfMonth"
                 } else if (dayOfMonth < 10) {
-                    date.value = "$year-${month + 1}-0$dayOfMonth"
+                    date = "$year-${month + 1}-0$dayOfMonth"
                 } else {
-                    date.value = "$year-${month + 1}-$dayOfMonth"
+                    date = "$year-${month + 1}-$dayOfMonth"
                 }
             }, year, month, day
         )
@@ -96,10 +100,10 @@ fun MainContentAddNoteScreen(
                 OutlinedTextField(
                     modifier = Modifier.clickable { mDatePickerDialog.show() },
                     enabled = false,
-                    value = date.value,
+                    value = date,
                     label = { Text(text = "Date:") },
                     onValueChange = {
-                        date.value = it
+                        date = it
                     }
                 )
             }
@@ -116,19 +120,33 @@ fun MainContentAddNoteScreen(
         Button(
             modifier = Modifier.padding(16.dp),
             onClick = {
-                if(title.isNotEmpty() && description.isNotEmpty()){
-                    val newNote = Note(
-                        title = title,
-                        date =  date.value,
-                        description = description)
+                if (note == null) {
+                    if(title.isNotEmpty() && description.isNotEmpty()) {
+                        val newNote = Note(
+                            title = title,
+                            date =  date,
+                            description = description)
 
-                    noteViewModel.addNote(newNote)
-                    navController.popBackStack()
+                        noteViewModel.addNote(note = newNote)
+                        navController.popBackStack()
+                    }
+                } else {
+                    if(title.isNotEmpty() && description.isNotEmpty()) {
+                        note.title = title
+                        note.date = date
+                        note.description = description
+
+                        noteViewModel.editNote(note = note)
+                        navController.popBackStack()
+                    }
                 }
-
             }) {
 
-            Text( text = "Save")
+            if (note == null) {
+                Text( text = "Save")
+            } else {
+                Text( text = "Update")
+            }
         }
     }
 }

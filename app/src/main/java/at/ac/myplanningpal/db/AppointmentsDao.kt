@@ -1,9 +1,6 @@
 package at.ac.myplanningpal.db
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import at.ac.myplanningpal.models.Appointment
 import at.ac.myplanningpal.models.Note
 import kotlinx.coroutines.flow.Flow
@@ -12,10 +9,13 @@ import kotlinx.coroutines.flow.Flow
 interface AppointmentsDao {
 
     @Insert
-    fun addAppointment(appointment: Appointment)
+    suspend fun addAppointment(appointment: Appointment)
+
+    @Update
+    suspend fun editAppointment(appointment: Appointment)
 
     @Delete
-    fun deleteAppointment(appointment: Appointment)
+    suspend fun deleteAppointment(appointment: Appointment)
 
     @Query("SELECT * FROM appointments")
     fun getAppointments(): Flow<List<Appointment>>

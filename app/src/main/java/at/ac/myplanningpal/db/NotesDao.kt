@@ -1,9 +1,6 @@
 package at.ac.myplanningpal.db
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import at.ac.myplanningpal.models.Note
 import kotlinx.coroutines.flow.Flow
 
@@ -12,6 +9,9 @@ interface NotesDao {
 
     @Insert
     suspend fun addNote(note: Note)
+
+    @Update
+    suspend fun editNote(note: Note)
 
     @Delete
     suspend fun deleteNote(note: Note)

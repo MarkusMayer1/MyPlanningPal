@@ -8,11 +8,11 @@ data class Appointment(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
 
-    val title: String,
-    val date: String,
-    val eventName: String,
-    val eventDescription: String? = null,
-    val alarm: Boolean)
+    var title: String,
+    var date: String,
+    var eventName: String,
+    var eventDescription: String? = null,
+    var alarm: Boolean)
 
 //fun getAppointmentsFromModel(): List<Appointment> {
 //    return listOf(

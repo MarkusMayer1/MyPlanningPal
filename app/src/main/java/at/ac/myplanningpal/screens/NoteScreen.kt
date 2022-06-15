@@ -15,6 +15,8 @@ import at.ac.myplanningpal.models.Note
 import at.ac.myplanningpal.navigation.MyPlanningPalScreens
 import at.ac.myplanningpal.viewmodel.NoteViewModel
 import at.ac.myplanningpal.widgets.NoteRow
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 @Composable
 fun NoteScreen(noteViewModel: NoteViewModel = viewModel(), navController: NavController = rememberNavController()) {
@@ -25,19 +27,27 @@ fun NoteScreen(noteViewModel: NoteViewModel = viewModel(), navController: NavCon
             }
         }
     ) {
-        MainContentNoteScreen(noteViewModel = noteViewModel)
+        MainContentNoteScreen(noteViewModel = noteViewModel, navController = navController)
     }
 }
 
 @Composable
-fun MainContentNoteScreen(noteViewModel: NoteViewModel = viewModel()) {
+fun MainContentNoteScreen(noteViewModel: NoteViewModel = viewModel(), navController: NavController = rememberNavController()) {
     val notes: List<Note> by noteViewModel.notes.collectAsState()
+
+    val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    val jsonAdapter = moshi.adapter(Note::class.java).lenient()
+
     LazyColumn {
         items(items = notes) { note ->
             NoteRow(
                 note = note,
-                onItemClick = { clickedNote ->
-                    noteViewModel.removeNote(clickedNote)
+                onItemEditClick = { editNote ->
+                    val noteJson = jsonAdapter.toJson(editNote)
+                    navController.navigate(route = MyPlanningPalScreens.AddNoteScreen.name + "?note=$noteJson")
+                },
+                onItemDeleteClick = { deleteNote ->
+                    noteViewModel.removeNote(deleteNote)
                 }
             )
         }

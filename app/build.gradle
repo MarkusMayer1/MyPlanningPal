@@ -78,4 +78,7 @@ dependencies {
     // Save Theme
     implementation "androidx.datastore:datastore-preferences:$datastore_version"
     implementation "androidx.compose.runtime:runtime-livedata:$runtime_version"
+
+
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 }

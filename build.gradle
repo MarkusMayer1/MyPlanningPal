@@ -7,6 +7,7 @@ buildscript {
         room_version = "2.4.2"
         datastore_version = "1.0.0"
         runtime_version = "1.2.0-alpha08"
+        moshi_version = "1.13.0"
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

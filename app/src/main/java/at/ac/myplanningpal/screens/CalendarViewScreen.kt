@@ -4,15 +4,10 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import at.ac.myplanningpal.models.Appointment
-import at.ac.myplanningpal.models.Note
 import at.ac.myplanningpal.navigation.MyPlanningPalScreens
 import at.ac.myplanningpal.viewmodel.AppointmentViewModel
 import com.himanshoe.kalendar.common.KalendarSelector

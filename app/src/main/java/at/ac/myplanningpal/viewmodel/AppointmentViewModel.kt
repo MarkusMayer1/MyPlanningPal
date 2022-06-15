@@ -1,17 +1,10 @@
 package at.ac.myplanningpal.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.ac.myplanningpal.models.Appointment
-import at.ac.myplanningpal.models.Note
-
 import at.ac.myplanningpal.repositories.AppointmentRepository
-import at.ac.myplanningpal.repositories.NoteRepository
 import com.himanshoe.kalendar.common.data.KalendarEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -38,28 +31,33 @@ class AppointmentViewModel(
 //    }
 //
 //
-    fun getTodaysAppointments(): List<Appointment> {
-        return getAppointmentsByDate(LocalDate.now().toString())
-    }
-
-    fun getAppointmentsByDate(date: String): List<Appointment> {
-        val returnList = mutableListOf<Appointment>()
-        for (appointment in _appointments.value) {
-            if (appointment.date == date) returnList.add(appointment)
-        }
-        return returnList
-    }
+//    fun getTodaysAppointments(): List<Appointment> {
+//        return getAppointmentsByDate(LocalDate.now().toString())
+//    }
+//
+//    fun getAppointmentsByDate(date: String): List<Appointment> {
+//        val returnList = mutableListOf<Appointment>()
+//        for (appointment in _appointments.value) {
+//            if (appointment.date == date) returnList.add(appointment)
+//        }
+//        return returnList
+//    }
 
     fun addAppointment(appointment: Appointment) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addAppointment(appointment = appointment)
         }
-
     }
 
     fun removeAppointment(appointment: Appointment) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAppointment(appointment = appointment)
+        }
+    }
+
+    fun editAppointment(appointment: Appointment) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.editAppointment(appointment = appointment)
         }
     }
 
@@ -75,7 +73,6 @@ class AppointmentViewModel(
             }
 
         }
-        Log.d("returnListdasdas: ", returnList.toString())
         return returnList
     }
 

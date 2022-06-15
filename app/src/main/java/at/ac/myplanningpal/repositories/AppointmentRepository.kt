@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.Flow
 
 class AppointmentRepository(private val dao: AppointmentsDao)
 {
-    fun addAppointment(appointment: Appointment) = dao.addAppointment(appointment = appointment)
+    suspend fun addAppointment(appointment: Appointment) = dao.addAppointment(appointment = appointment)
 
-    fun deleteAppointment(appointment: Appointment) = dao.deleteAppointment(appointment = appointment)
+    suspend fun editAppointment(appointment: Appointment) = dao.editAppointment(appointment = appointment)
+
+    suspend fun deleteAppointment(appointment: Appointment) = dao.deleteAppointment(appointment = appointment)
 
     fun getAllAppointments(): Flow<List<Appointment>> = dao.getAppointments()
 }

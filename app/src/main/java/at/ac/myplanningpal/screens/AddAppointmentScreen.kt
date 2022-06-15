@@ -21,7 +21,10 @@ import java.time.LocalDate
 import java.util.*
 
 @Composable
-fun AddAppointmentScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController = rememberNavController()) {
+fun AddAppointmentScreen(
+    appointmentViewModel: AppointmentViewModel = viewModel(),
+    navController: NavController = rememberNavController(),
+    appointment: Appointment? = null) {
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -34,20 +37,24 @@ fun AddAppointmentScreen(appointmentViewModel: AppointmentViewModel = viewModel(
             })
         }
     ) {
-        MainContentAddAppointmentScreen(navController = navController, appointmentViewModel = appointmentViewModel)
+        MainContentAddAppointmentScreen(
+            navController = navController,
+            appointmentViewModel = appointmentViewModel,
+            appointment = appointment)
     }
 }
 
 @Composable
 fun MainContentAddAppointmentScreen(
     navController: NavController = rememberNavController(),
-    appointmentViewModel: AppointmentViewModel = viewModel()
+    appointmentViewModel: AppointmentViewModel = viewModel(),
+    appointment: Appointment? = null
 ) {
-    var title by remember { mutableStateOf("") }
-    var date = remember { mutableStateOf(LocalDate.now().toString()) }
-    var eventName by remember { mutableStateOf("") }
-    var eventDescription by remember { mutableStateOf("") }
-    var alarm by remember { mutableStateOf(false) }
+    var title by remember { mutableStateOf(appointment?.title ?: "") }
+    var date by remember { mutableStateOf(appointment?.date ?: LocalDate.now().toString()) }
+    var eventName by remember { mutableStateOf(appointment?.eventName ?: "") }
+    var eventDescription by remember { mutableStateOf(appointment?.eventDescription ?: "") }
+    var alarm by remember { mutableStateOf(appointment?.alarm ?: false) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -79,13 +86,13 @@ fun MainContentAddAppointmentScreen(
             context,
             { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
                 if (month < 10 && dayOfMonth < 10) {
-                    date.value = "$year-0${month + 1}-0$dayOfMonth"
+                    date = "$year-0${month + 1}-0$dayOfMonth"
                 } else if (month < 10) {
-                    date.value = "$year-0${month + 1}-$dayOfMonth"
+                    date = "$year-0${month + 1}-$dayOfMonth"
                 } else if (dayOfMonth < 10) {
-                    date.value = "$year-${month + 1}-0$dayOfMonth"
+                    date = "$year-${month + 1}-0$dayOfMonth"
                 } else {
-                    date.value = "$year-${month + 1}-$dayOfMonth"
+                    date = "$year-${month + 1}-$dayOfMonth"
                 }
             }, year, month, day
         )
@@ -95,10 +102,10 @@ fun MainContentAddAppointmentScreen(
                 OutlinedTextField(
                     modifier = Modifier.clickable { mDatePickerDialog.show() },
                     enabled = false,
-                    value = date.value,
+                    value = date,
                     label = { Text(text = "Date:") },
                     onValueChange = {
-                        date.value = it
+                        date = it
                     }
                 )
             }
@@ -128,21 +135,39 @@ fun MainContentAddAppointmentScreen(
         Button(
             modifier = Modifier.padding(16.dp),
             onClick = {
-                if(title.isNotEmpty() && eventName.isNotEmpty()){
-                    val newAppointment = Appointment(
-                        title = title,
-                        date =  date.value,
-                        eventName = eventName,
-                        eventDescription = eventDescription,
-                        alarm = alarm)
+                if (appointment == null) {
+                    if(title.isNotEmpty() && eventName.isNotEmpty()){
+                        val newAppointment = Appointment(
+                            title = title,
+                            date =  date,
+                            eventName = eventName,
+                            eventDescription = eventDescription,
+                            alarm = alarm)
 
-                    appointmentViewModel.addAppointment(newAppointment)
-                    navController.popBackStack()
+                        appointmentViewModel.addAppointment(newAppointment)
+                        navController.popBackStack()
+                    }
+                } else {
+                    if(title.isNotEmpty() && eventName.isNotEmpty()) {
+                        appointment.title = title
+                        appointment.date = date
+                        appointment.eventName = eventName
+                        appointment.eventDescription = eventDescription
+                        appointment.alarm = alarm
+
+                        appointmentViewModel.editAppointment(appointment = appointment)
+                        navController.popBackStack()
+                    }
                 }
+
 
             }) {
 
-            Text( text = "Save")
+            if (appointment == null) {
+                Text( text = "Save")
+            } else {
+                Text( text = "Update")
+            }
         }
     }
 }
