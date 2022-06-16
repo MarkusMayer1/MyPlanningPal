@@ -78,5 +78,6 @@ fun MyPlanningPalNavigation(navController: NavHostController = rememberNavContro
                 note =  note
             )
         }
+        composable(route = MyPlanningPalScreens.DrawingScreen.name){ DrawingScreen() }
     }
 }

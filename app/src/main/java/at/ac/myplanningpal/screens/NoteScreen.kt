@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,7 +37,10 @@ fun NoteScreen(noteViewModel: NoteViewModel = viewModel(), navController: NavCon
 
 @Composable
 fun MainContentNoteScreen(noteViewModel: NoteViewModel = viewModel(), navController: NavController = rememberNavController()) {
-    Column(Modifier.fillMaxSize().padding(top =  10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(top = 10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Notes: ", style = MaterialTheme.typography.h5)
 
         Divider()
@@ -61,6 +64,9 @@ fun MainContentNoteScreen(noteViewModel: NoteViewModel = viewModel(), navControl
                     }
                 )
             }
+        }
+        IconButton(onClick = { navController.navigate(route = MyPlanningPalScreens.DrawingScreen.name) }) {
+            Icon(imageVector = Icons.Default.BorderColor, contentDescription = "draw")
         }
     }
 }
