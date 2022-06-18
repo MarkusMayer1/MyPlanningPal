@@ -21,8 +21,6 @@ import at.ac.myplanningpal.viewmodel.AppointmentViewModel
 import at.ac.myplanningpal.widgets.AppointmentWithMonthAndDay
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -41,21 +39,33 @@ fun CalendarListViewScreen(appointmentViewModel: AppointmentViewModel = viewMode
 
 @Composable
 fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel = viewModel(), navController: NavController = rememberNavController()) {
-    Column(Modifier.fillMaxSize().padding(top =  10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(top = 10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Appointments: ", style = MaterialTheme.typography.h5)
 
         Divider()
 
         Spacer(modifier = Modifier.height(10.dp))
+
         val appointments: List<Appointment> by appointmentViewModel.appointments.collectAsState()
+        var dates = mutableListOf<LocalDate>()
+        for (appointment in appointments) {
+            if (!dates.toString().contains(appointment.date)) {
+                dates.add(LocalDate.parse(appointment.date, DateTimeFormatter.ISO_LOCAL_DATE))
+            }
+        }
+        dates = dates.distinct().toMutableList()
+        dates.sort()
 
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter(Appointment::class.java).lenient()
 
-        LazyColumn {
-            items(items = appointmentViewModel.getDates()) { date ->
+        LazyColumn(contentPadding = PaddingValues(bottom = 85.dp)) {
+            items(items = dates) { date ->
                 AppointmentWithMonthAndDay(
-                    stringDate = date.toString(),
+                    date = date,
                     appointments = appointments,
                     onItemEditClick = { editAppointment ->
                         val appointmentJson = jsonAdapter.toJson(editAppointment)

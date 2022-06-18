@@ -1,6 +1,5 @@
 package at.ac.myplanningpal.screens
 
-import android.content.Context.ALARM_SERVICE
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items

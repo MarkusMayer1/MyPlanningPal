@@ -3,7 +3,6 @@ package at.ac.myplanningpal.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import at.ac.myplanningpal.repositories.AppointmentRepository
-import at.ac.myplanningpal.repositories.NoteRepository
 import java.lang.IllegalArgumentException
 
 class AppointmentViewModelFactory(private val repository: AppointmentRepository): ViewModelProvider.Factory {

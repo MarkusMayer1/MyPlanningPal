@@ -1,6 +1,5 @@
 package at.ac.myplanningpal.widgets
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
@@ -13,15 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import at.ac.myplanningpal.models.Appointment
 import at.ac.myplanningpal.models.Note
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import kotlin.math.log
 
 @Composable
 fun TodaysAppointmentRow(
@@ -29,8 +24,6 @@ fun TodaysAppointmentRow(
     onItemEditClick: (Appointment) -> Unit = {},
     onItemDeleteClick: (Appointment) -> Unit = {}
 ) {
-    Log.d("appointment date: ", appointment.date)
-    Log.d("current date", LocalDate.now().toString())
     if (appointment.date == LocalDate.now().toString()) {
         AppointmentRow(
             appointment = appointment,
@@ -40,17 +33,12 @@ fun TodaysAppointmentRow(
     }
 }
 
-
 @Composable
 fun AppointmentRow(
     appointment: Appointment,
     onItemEditClick: (Appointment) -> Unit = {},
     onItemDeleteClick: (Appointment) -> Unit = {}
 ) {
-    /*var showExtendedMovieRow by remember {
-        mutableStateOf(false)
-    }*/
-
     Card(
         modifier = Modifier
             .padding(4.dp)
@@ -79,7 +67,6 @@ fun AppointmentRow(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Column(
                 modifier = Modifier
                     .padding(10.dp)
@@ -96,12 +83,6 @@ fun AppointmentRow(
                         style = MaterialTheme.typography.caption
                     )
                 }
-
-                /*Icon(
-                    imageVector = if (showExtendedMovieRow) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                    contentDescription = "arrow",
-                    modifier = Modifier.clickable { showExtendedMovieRow = !showExtendedMovieRow }
-                )*/
             }
 
             Row(
@@ -129,16 +110,13 @@ fun AppointmentRow(
     }
 }
 
-
 @Composable
 fun AppointmentWithMonthAndDay(
-    stringDate: String,
+    date: LocalDate,
     appointments: List<Appointment>,
     onItemEditClick: (Appointment) -> Unit = {},
     onItemDeleteClick: (Appointment) -> Unit = {}
 ) {
-    val date = LocalDate.parse(stringDate, DateTimeFormatter.ISO_LOCAL_DATE)
-
     Text(
         text = date.month.toString(),
         style = MaterialTheme.typography.h6

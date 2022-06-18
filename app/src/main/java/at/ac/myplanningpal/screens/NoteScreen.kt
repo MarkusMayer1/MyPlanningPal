@@ -51,7 +51,10 @@ fun MainContentNoteScreen(noteViewModel: NoteViewModel = viewModel(), navControl
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter(Note::class.java).lenient()
 
-        LazyColumn {
+        IconButton(onClick = { navController.navigate(route = MyPlanningPalScreens.DrawingScreen.name) }) {
+            Icon(imageVector = Icons.Default.BorderColor, contentDescription = "draw")
+        }
+        LazyColumn(contentPadding = PaddingValues(bottom = 85.dp)) {
             items(items = notes) { note ->
                 NoteRow(
                     note = note,
@@ -64,9 +67,6 @@ fun MainContentNoteScreen(noteViewModel: NoteViewModel = viewModel(), navControl
                     }
                 )
             }
-        }
-        IconButton(onClick = { navController.navigate(route = MyPlanningPalScreens.DrawingScreen.name) }) {
-            Icon(imageVector = Icons.Default.BorderColor, contentDescription = "draw")
         }
     }
 }

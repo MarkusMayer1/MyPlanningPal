@@ -26,23 +26,6 @@ class AppointmentViewModel(
         }
     }
 
-//    fun getAppointments(): List<Appointment> {
-//        return appointments
-//    }
-//
-//
-//    fun getTodaysAppointments(): List<Appointment> {
-//        return getAppointmentsByDate(LocalDate.now().toString())
-//    }
-//
-//    fun getAppointmentsByDate(date: String): List<Appointment> {
-//        val returnList = mutableListOf<Appointment>()
-//        for (appointment in _appointments.value) {
-//            if (appointment.date == date) returnList.add(appointment)
-//        }
-//        return returnList
-//    }
-
     fun addAppointment(appointment: Appointment) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addAppointment(appointment = appointment)
@@ -66,27 +49,11 @@ class AppointmentViewModel(
         for (appointment in _appointments.value) {
             try {
                 val datess = LocalDate.parse(appointment.date, DateTimeFormatter.ISO_LOCAL_DATE)
-                //Log.d("parsed LocalDate", datess.toString())
                 returnList.add(KalendarEvent(datess, appointment.eventName, appointment.eventDescription))
             } catch(e: Exception) {
                 Log.d("LocalDate parsing error", e.message.toString())
             }
-
         }
         return returnList
-    }
-
-    fun getDates(): List<LocalDate> {
-        var dates = mutableListOf<LocalDate>()
-        for (appointment in _appointments.value) {
-            if (!dates.toString().contains(appointment.date.toString())) {
-                val datess = LocalDate.parse(appointment.date, DateTimeFormatter.ISO_LOCAL_DATE)
-                //Log.d("parsed LocalDate", datess.toString())
-                dates.add(datess)
-            }
-        }
-        dates = dates.distinct().toMutableList()
-        dates.sort()
-        return dates
     }
 }
