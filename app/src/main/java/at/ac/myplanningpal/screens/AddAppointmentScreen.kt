@@ -1,7 +1,9 @@
 package at.ac.myplanningpal.screens
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.widget.DatePicker
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -20,6 +22,8 @@ import androidx.navigation.compose.rememberNavController
 import at.ac.myplanningpal.models.Appointment
 import at.ac.myplanningpal.viewmodel.AppointmentViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Composable
@@ -54,8 +58,12 @@ fun MainContentAddAppointmentScreen(
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+
     var title by remember { mutableStateOf(appointment?.title ?: "") }
     var date by remember { mutableStateOf(appointment?.date ?: LocalDate.now().toString()) }
+    var time by remember { mutableStateOf(appointment?.time ?: current.format(formatter)) }
     var eventDescription by remember { mutableStateOf(appointment?.eventDescription ?: "") }
     var color by remember { mutableStateOf(appointment?.color ?: "") }
     var alarm by remember { mutableStateOf(appointment?.alarm ?: false) }
@@ -110,6 +118,38 @@ fun MainContentAddAppointmentScreen(
                     label = { Text(text = "Date:") },
                     onValueChange = {
                         date = it
+                    }
+                )
+            }
+        }
+
+        val hour = mCalendar[Calendar.HOUR_OF_DAY]
+        val minute = mCalendar[Calendar.MINUTE]
+
+        val mTimePickerDialog = TimePickerDialog(
+            context,
+            {_, hour : Int, minute: Int ->
+                if (hour < 10 && minute < 10) {
+                    time = "0$hour:0$minute"
+                } else if (hour < 10) {
+                    time = "0$hour:$minute"
+                } else if (minute < 10) {
+                    time = "$hour:0$minute"
+                } else {
+                    time = "$hour:$minute"
+                }
+            }, hour, minute, true
+        )
+
+        Column {
+            Row {
+                OutlinedTextField(
+                    modifier = Modifier.clickable { mTimePickerDialog.show() },
+                    enabled = false,
+                    value = time,
+                    label = { Text(text = "Time:") },
+                    onValueChange = {
+                        time = it
                     }
                 )
             }
@@ -195,6 +235,7 @@ fun MainContentAddAppointmentScreen(
                         val newAppointment = Appointment(
                             title = title,
                             date =  date,
+                            time = time,
                             eventName = title,
                             color = color,
                             eventDescription = eventDescription,
@@ -207,6 +248,7 @@ fun MainContentAddAppointmentScreen(
                     if(title.isNotEmpty()) {
                         appointment.title = title
                         appointment.date = date
+                        appointment.time = time
                         appointment.eventName = title
                         appointment.color = color
                         appointment.eventDescription = eventDescription

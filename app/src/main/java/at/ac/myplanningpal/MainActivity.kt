@@ -1,7 +1,9 @@
 package at.ac.myplanningpal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -18,16 +20,29 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import at.ac.myplanningpal.db.MyPlanningPalDB
+import at.ac.myplanningpal.models.Appointment
 import at.ac.myplanningpal.navigation.MyPlanningPalNavigation
 import at.ac.myplanningpal.navigation.MyPlanningPalScreens
+import at.ac.myplanningpal.notifications.createNotificationChannel
+import at.ac.myplanningpal.notifications.simpleNotification
+import at.ac.myplanningpal.repositories.AppointmentRepository
+import at.ac.myplanningpal.repositories.NoteRepository
 import at.ac.myplanningpal.ui.theme.MyPlanningPalTheme
-import at.ac.myplanningpal.viewmodel.ThemeViewModel
+import at.ac.myplanningpal.viewmodel.*
+import kotlinx.coroutines.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 val Context.dataStore by preferencesDataStore("settings")
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("CoroutineCreationDuringComposition")
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,6 +82,28 @@ class MainActivity : ComponentActivity() {
 
             LaunchedEffect(viewModel) {
                 viewModel.request()
+            }
+
+            val channelId = "MyPlanningPal"
+            //val notificationId = 0
+
+            LaunchedEffect(Unit) {
+                createNotificationChannel(channelId, context)
+            }
+
+            val db = MyPlanningPalDB.getDatabase(context = context)
+            val noteRepository = NoteRepository(dao = db.notesDao())
+            val noteViewModel: NoteViewModel = viewModel(
+                factory = NoteViewModelFactory(repository = noteRepository)
+            )
+
+            val appointmentRepository = AppointmentRepository(dao = db.appointmentsDao())
+            val appointmentViewModel: AppointmentViewModel = viewModel(
+                factory = AppointmentViewModelFactory(repository = appointmentRepository)
+            )
+
+            GlobalScope.launch {
+                alarm(context = context, channelId = "MyPlanningPal", notificationId = 0, appointmentViewModel = appointmentViewModel)
             }
 
             MyPlanningPalTheme {
@@ -173,7 +210,10 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        MyPlanningPalNavigation(navController = navController)
+                        MyPlanningPalNavigation(
+                            navController = navController,
+                            appointmentViewModel = appointmentViewModel,
+                            noteViewModel = noteViewModel)
                     }
                 }
             }
@@ -186,5 +226,29 @@ class MainActivity : ComponentActivity() {
 fun DefaultPreview() {
     MyPlanningPalTheme {
         MyPlanningPalNavigation()
+    }
+}
+
+suspend fun alarm(context: Context, channelId: String, notificationId: Int, appointmentViewModel: AppointmentViewModel) {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+
+    while (true) {
+        Log.d("Alarm", "wait 1 min")
+        delay(60000L)
+        val current = LocalDateTime.now()
+        val formatted = current.format(formatter)
+
+        for (appointment in appointmentViewModel.appointments.value) {
+            if (appointment.alarm && appointment.date + " " + appointment.time == formatted) {
+                simpleNotification(
+                    context,
+                    channelId,
+                    notificationId,
+                    appointment.title,
+                    appointment.eventDescription ?: ""
+                )
+            }
+        }
+        Log.d("Alarm", "notifications sent")
     }
 }

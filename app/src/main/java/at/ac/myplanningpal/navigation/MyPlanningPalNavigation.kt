@@ -22,20 +22,11 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 @Composable
-fun MyPlanningPalNavigation(navController: NavHostController = rememberNavController()) {
-
-    val context = LocalContext.current
-    val db = MyPlanningPalDB.getDatabase(context = context)
-    val noteRepository = NoteRepository(dao = db.notesDao())
-    val noteViewModel: NoteViewModel = viewModel(
-        factory = NoteViewModelFactory(repository = noteRepository)
-    )
-
-    val appointmentRepository = AppointmentRepository(dao = db.appointmentsDao())
-    val appointmentViewModel: AppointmentViewModel = viewModel(
-        factory = AppointmentViewModelFactory(repository = appointmentRepository)
-    )
-
+fun MyPlanningPalNavigation(
+    navController: NavHostController = rememberNavController(),
+    appointmentViewModel: AppointmentViewModel = viewModel(),
+    noteViewModel: NoteViewModel = viewModel()
+) {
     NavHost(navController = navController, startDestination = MyPlanningPalScreens.HomeScreen.name) {
         composable(route = MyPlanningPalScreens.HomeScreen.name) { HomeScreen(appointmentViewModel = appointmentViewModel, navController = navController) }
         composable(route = MyPlanningPalScreens.CalendarViewScreen.name) { CalendarViewScreen(appointmentViewModel = appointmentViewModel, navController = navController ) }

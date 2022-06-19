@@ -195,6 +195,7 @@ fun MainContentAddNoteScreen(
                         note.title = title
                         note.date = date
                         note.description = description
+                        note.color = color
 
                         noteViewModel.editNote(note = note)
                         navController.popBackStack()

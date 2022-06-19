@@ -77,11 +77,20 @@ fun AppointmentRow(
                     text = "Date: ${appointment.date}",
                     style = MaterialTheme.typography.caption
                 )
+                Text(
+                    text = "Time: ${appointment.time}",
+                    style = MaterialTheme.typography.caption
+                )
                 if (!appointment.eventDescription.isNullOrEmpty()) {
                     Text(
-                        text = "Event Description: ${appointment.eventDescription}",
+                        text = "Description: ${appointment.eventDescription}",
                         style = MaterialTheme.typography.caption
                     )
+                }
+                if (appointment.alarm) {
+                    Icon(imageVector = Icons.Default.AlarmOn, contentDescription = "alarmOn")
+                } else {
+                    Icon(imageVector = Icons.Default.AlarmOff, contentDescription = "alarmOff")
                 }
             }
 

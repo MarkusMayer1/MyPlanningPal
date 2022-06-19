@@ -56,4 +56,14 @@ class AppointmentViewModel(
         }
         return returnList
     }
+
+    fun getAppointments(): List<Appointment> {
+        var result: List<Appointment> = listOf()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.getAllAppointments().collect { listOfAppointments ->
+                result = listOfAppointments
+            }
+        }
+        return result
+    }
 }
