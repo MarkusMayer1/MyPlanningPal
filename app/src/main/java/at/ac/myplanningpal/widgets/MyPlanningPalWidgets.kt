@@ -1,5 +1,6 @@
 package at.ac.myplanningpal.widgets
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
@@ -48,17 +49,17 @@ fun AppointmentRow(
         elevation = 6.dp
     ) {
         when (appointment.color) {
-        "Green" -> {
+        "Not important" -> {
             Box(
                 modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Green)
             )
         }
-        "Yellow" -> {
+        "Important" -> {
             Box(
                 modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFE500))
             )
         }
-        "Red" -> {
+        "Very important" -> {
             Box(
                 modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Red)
             )
@@ -176,17 +177,17 @@ fun NoteRow(
         elevation = 6.dp
     ) {
         when (note.color) {
-            "Green" -> {
+            "Not important" -> {
                 Box(
                     modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Green)
                 )
             }
-            "Yellow" -> {
+            "Important" -> {
                 Box(
                     modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFE500))
                 )
             }
-            "Red" -> {
+            "Very important" -> {
                 Box(
                     modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Red)
                 )

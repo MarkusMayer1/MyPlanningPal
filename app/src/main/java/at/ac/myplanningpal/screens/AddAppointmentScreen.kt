@@ -3,6 +3,7 @@ package at.ac.myplanningpal.screens
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -160,7 +162,7 @@ fun MainContentAddAppointmentScreen(
                 modifier = Modifier.clickable { showMenu = !showMenu },
                 enabled = false,
                 value = color,
-                label = { Text(text = "Color:") },
+                label = { Text(text = "Importance:") },
                 onValueChange = {
                     color = it
                 }
@@ -171,44 +173,53 @@ fun MainContentAddAppointmentScreen(
                 onDismissRequest = { showMenu = false }) {
 
                 DropdownMenuItem(onClick = {
-                    color = "Red"
+                    color = "Very important"
                     showMenu = false
                 }) {
                     Row {
                         Text(
-                            text = "Red",
+                            text = "Very important",
                             modifier = Modifier
                                 .padding(4.dp)
-                                .width(100.dp)
+                                .width(130.dp)
                         )
+                        Canvas(modifier = Modifier.size(25.dp), onDraw = {
+                            drawCircle(color = Color.Red)
+                        })
                     }
                 }
 
                 DropdownMenuItem(onClick = {
-                    color = "Yellow"
+                    color = "Important"
                     showMenu = false
                 }) {
                     Row {
                         Text(
-                            text = "Yellow",
+                            text = "Important",
                             modifier = Modifier
                                 .padding(4.dp)
-                                .width(100.dp)
+                                .width(130.dp)
                         )
+                        Canvas(modifier = Modifier.size(25.dp), onDraw = {
+                            drawCircle(color = Color.Yellow)
+                        })
                     }
                 }
 
                 DropdownMenuItem(onClick = {
-                    color = "Green"
+                    color = "Not important"
                     showMenu = false
                 }) {
                     Row {
                         Text(
-                            text = "Green",
+                            text = "Not important",
                             modifier = Modifier
                                 .padding(4.dp)
-                                .width(100.dp)
+                                .width(130.dp)
                         )
+                        Canvas(modifier = Modifier.size(25.dp), onDraw = {
+                            drawCircle(color = Color.Green)
+                        })
                     }
                 }
             }
