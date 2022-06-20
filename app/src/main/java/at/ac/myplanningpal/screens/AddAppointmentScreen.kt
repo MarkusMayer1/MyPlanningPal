@@ -4,14 +4,11 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +55,8 @@ fun MainContentAddAppointmentScreen(
     appointmentViewModel: AppointmentViewModel = viewModel(),
     appointment: Appointment? = null
 ) {
-    var showMenu by remember { mutableStateOf(false) }
+    var showMenuImportance by remember { mutableStateOf(false) }
+    var showMenuAlarmSound by remember { mutableStateOf(false) }
 
     val current = LocalDateTime.now()
     val formatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -67,7 +65,8 @@ fun MainContentAddAppointmentScreen(
     var date by remember { mutableStateOf(appointment?.date ?: LocalDate.now().toString()) }
     var time by remember { mutableStateOf(appointment?.time ?: current.format(formatter)) }
     var eventDescription by remember { mutableStateOf(appointment?.eventDescription ?: "") }
-    var color by remember { mutableStateOf(appointment?.color ?: "") }
+    var importance by remember { mutableStateOf(appointment?.importance ?: "") }
+    var alarmSound by remember { mutableStateOf(appointment?.alarmSound ?: "System default") }
     var alarm by remember { mutableStateOf(appointment?.alarm ?: false) }
 
     Column(
@@ -159,22 +158,22 @@ fun MainContentAddAppointmentScreen(
 
         Column {
             OutlinedTextField(
-                modifier = Modifier.clickable { showMenu = !showMenu },
+                modifier = Modifier.clickable { showMenuImportance = !showMenuImportance },
                 enabled = false,
-                value = color,
+                value = importance,
                 label = { Text(text = "Importance:") },
                 onValueChange = {
-                    color = it
+                    importance = it
                 }
             )
 
             DropdownMenu(
-                expanded = showMenu,
-                onDismissRequest = { showMenu = false }) {
+                expanded = showMenuImportance,
+                onDismissRequest = { showMenuImportance = false }) {
 
                 DropdownMenuItem(onClick = {
-                    color = "Very important"
-                    showMenu = false
+                    importance = "Very important"
+                    showMenuImportance = false
                 }) {
                     Row {
                         Text(
@@ -190,8 +189,8 @@ fun MainContentAddAppointmentScreen(
                 }
 
                 DropdownMenuItem(onClick = {
-                    color = "Important"
-                    showMenu = false
+                    importance = "Important"
+                    showMenuImportance = false
                 }) {
                     Row {
                         Text(
@@ -207,8 +206,8 @@ fun MainContentAddAppointmentScreen(
                 }
 
                 DropdownMenuItem(onClick = {
-                    color = "Not important"
-                    showMenu = false
+                    importance = "Not important"
+                    showMenuImportance = false
                 }) {
                     Row {
                         Text(
@@ -221,6 +220,71 @@ fun MainContentAddAppointmentScreen(
                             drawCircle(color = Color.Green)
                         })
                     }
+                }
+            }
+        }
+
+        Column {
+            OutlinedTextField(
+                modifier = Modifier.clickable { showMenuAlarmSound = !showMenuAlarmSound },
+                enabled = false,
+                value = alarmSound,
+                label = { Text(text = "Alarm sound:") },
+                onValueChange = {
+                    alarmSound = it
+                }
+            )
+
+            DropdownMenu(
+                expanded = showMenuAlarmSound,
+                onDismissRequest = { showMenuAlarmSound = false }) {
+
+                DropdownMenuItem(onClick = {
+                    alarmSound = "System default"
+                    showMenuAlarmSound = false
+                }) {
+                    Text(
+                        text = "System default",
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .width(130.dp)
+                    )
+                }
+
+                DropdownMenuItem(onClick = {
+                    alarmSound = "Clearly"
+                    showMenuAlarmSound = false
+                }) {
+                    Text(
+                        text = "Clearly",
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .width(130.dp)
+                    )
+                }
+
+                DropdownMenuItem(onClick = {
+                    alarmSound = "Juntos"
+                    showMenuAlarmSound = false
+                }) {
+                    Text(
+                        text = "Juntos",
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .width(130.dp)
+                    )
+                }
+
+                DropdownMenuItem(onClick = {
+                    alarmSound = "Sharp"
+                    showMenuAlarmSound = false
+                }) {
+                    Text(
+                        text = "Sharp",
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .width(130.dp)
+                    )
                 }
             }
         }
@@ -248,8 +312,9 @@ fun MainContentAddAppointmentScreen(
                             date =  date,
                             time = time,
                             eventName = title,
-                            color = color,
+                            importance = importance,
                             eventDescription = eventDescription,
+                            alarmSound = alarmSound,
                             alarm = alarm)
 
                         appointmentViewModel.addAppointment(newAppointment)
@@ -261,8 +326,9 @@ fun MainContentAddAppointmentScreen(
                         appointment.date = date
                         appointment.time = time
                         appointment.eventName = title
-                        appointment.color = color
+                        appointment.importance = importance
                         appointment.eventDescription = eventDescription
+                        appointment.alarmSound = alarmSound
                         appointment.alarm = alarm
 
                         appointmentViewModel.editAppointment(appointment = appointment)

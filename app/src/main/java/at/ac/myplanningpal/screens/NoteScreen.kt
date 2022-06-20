@@ -47,6 +47,7 @@ fun MainContentNoteScreen(noteViewModel: NoteViewModel = viewModel(), navControl
 
         Spacer(modifier = Modifier.height(10.dp))
         val notes: List<Note> by noteViewModel.notes.collectAsState()
+        val sortedNotes = notes.sortedBy { it.date }
 
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter(Note::class.java).lenient()
@@ -55,7 +56,7 @@ fun MainContentNoteScreen(noteViewModel: NoteViewModel = viewModel(), navControl
             Icon(imageVector = Icons.Default.BorderColor, contentDescription = "draw")
         }
         LazyColumn(contentPadding = PaddingValues(bottom = 85.dp)) {
-            items(items = notes) { note ->
+            items(items = sortedNotes) { note ->
                 NoteRow(
                     note = note,
                     onItemEditClick = { editNote ->

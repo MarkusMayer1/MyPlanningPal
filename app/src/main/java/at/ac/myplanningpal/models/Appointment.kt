@@ -12,8 +12,9 @@ data class Appointment(
     var date: String,
     var time: String,
     var eventName: String,
-    var color: String,
+    var importance: String,
     var eventDescription: String? = null,
+    var alarmSound: String,
     var alarm: Boolean)
 
 //fun getAppointmentsFromModel(): List<Appointment> {

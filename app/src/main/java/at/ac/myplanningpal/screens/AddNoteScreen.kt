@@ -54,7 +54,7 @@ fun MainContentAddNoteScreen(
     var title by remember { mutableStateOf(note?.title ?: "") }
     var date by remember { mutableStateOf(note?.date ?: LocalDate.now().toString()) }
     var description by remember { mutableStateOf(note?.description ?: "") }
-    var color by remember { mutableStateOf(note?.color ?: "") }
+    var importance by remember { mutableStateOf(note?.importance ?: "") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -115,10 +115,10 @@ fun MainContentAddNoteScreen(
             OutlinedTextField(
                 modifier = Modifier.clickable { showMenu = !showMenu },
                 enabled = false,
-                value = color,
+                value = importance,
                 label = { Text(text = "Importance:") },
                 onValueChange = {
-                    color = it
+                    importance = it
                 }
             )
 
@@ -127,7 +127,7 @@ fun MainContentAddNoteScreen(
                 onDismissRequest = { showMenu = false }) {
 
                 DropdownMenuItem(onClick = {
-                    color = "Very important"
+                    importance = "Very important"
                     showMenu = false
                 }) {
                     Row {
@@ -144,7 +144,7 @@ fun MainContentAddNoteScreen(
                 }
 
                 DropdownMenuItem(onClick = {
-                    color = "Important"
+                    importance = "Important"
                     showMenu = false
                 }) {
                     Row {
@@ -161,7 +161,7 @@ fun MainContentAddNoteScreen(
                 }
 
                 DropdownMenuItem(onClick = {
-                    color = "Not important"
+                    importance = "Not important"
                     showMenu = false
                 }) {
                     Row {
@@ -196,7 +196,7 @@ fun MainContentAddNoteScreen(
                             title = title,
                             date =  date,
                             description = description,
-                            color = color)
+                            importance = importance)
 
                         noteViewModel.addNote(note = newNote)
                         navController.popBackStack()
@@ -206,7 +206,7 @@ fun MainContentAddNoteScreen(
                         note.title = title
                         note.date = date
                         note.description = description
-                        note.color = color
+                        note.importance = importance
 
                         noteViewModel.editNote(note = note)
                         navController.popBackStack()

@@ -37,12 +37,13 @@ fun MainContentHomeScreen(appointmentViewModel: AppointmentViewModel = viewModel
         Spacer(modifier = Modifier.height(10.dp))
 
         val appointments: List<Appointment> by appointmentViewModel.appointments.collectAsState()
+        val sortedAppointments = appointments.sortedWith(compareBy({ it.date }, { it.time }))
 
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val jsonAdapter = moshi.adapter(Appointment::class.java).lenient()
 
         LazyColumn {
-            items(items = appointments) { appointment ->
+            items(items = sortedAppointments) { appointment ->
                 TodaysAppointmentRow(
                     appointment = appointment,
                     onItemEditClick = {editAppointment ->

@@ -48,7 +48,7 @@ fun AppointmentRow(
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = 6.dp
     ) {
-        when (appointment.color) {
+        when (appointment.importance) {
         "Not important" -> {
             Box(
                 modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Green)
@@ -85,6 +85,12 @@ fun AppointmentRow(
                 if (!appointment.eventDescription.isNullOrEmpty()) {
                     Text(
                         text = "Description: ${appointment.eventDescription}",
+                        style = MaterialTheme.typography.caption
+                    )
+                }
+                if(appointment.alarmSound != "System default") {
+                    Text(
+                        text = "Alarm sound: ${appointment.alarmSound}",
                         style = MaterialTheme.typography.caption
                     )
                 }
@@ -176,7 +182,7 @@ fun NoteRow(
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = 6.dp
     ) {
-        when (note.color) {
+        when (note.importance) {
             "Not important" -> {
                 Box(
                     modifier = Modifier.height(5.dp).width(75.dp).clip(RoundedCornerShape(12.dp)).background(Color.Green)

@@ -17,15 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import at.ac.myplanningpal.db.MyPlanningPalDB
-import at.ac.myplanningpal.models.Appointment
 import at.ac.myplanningpal.navigation.MyPlanningPalNavigation
 import at.ac.myplanningpal.navigation.MyPlanningPalScreens
 import at.ac.myplanningpal.notifications.createNotificationChannel
@@ -84,14 +83,15 @@ class MainActivity : ComponentActivity() {
                 viewModel.request()
             }
 
-            val channelId = "MyPlanningPal"
-            //val notificationId = 0
-
             LaunchedEffect(Unit) {
-                createNotificationChannel(channelId, context)
+                createNotificationChannel(channelId = "MyPlanningPal_", channelName = "MyPlanningPal_channel", context = context)
+                createNotificationChannel(channelId = "MyPlanningPal_clearly", channelName = "MyPlanningPal_channel_clearly", soundName = "clearly", context = context)
+                createNotificationChannel(channelId = "MyPlanningPal_juntos", channelName = "MyPlanningPal_channel_juntos", soundName = "juntos", context = context)
+                createNotificationChannel(channelId = "MyPlanningPal_sharp", channelName = "MyPlanningPal_channel_sharp", soundName = "sharp", context = context)
             }
 
             val db = MyPlanningPalDB.getDatabase(context = context)
+
             val noteRepository = NoteRepository(dao = db.notesDao())
             val noteViewModel: NoteViewModel = viewModel(
                 factory = NoteViewModelFactory(repository = noteRepository)
@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
             )
 
             GlobalScope.launch {
-                alarm(context = context, channelId = "MyPlanningPal", notificationId = 0, appointmentViewModel = appointmentViewModel)
+                alarm(context = context, notificationId = 0, appointmentViewModel = appointmentViewModel)
             }
 
             MyPlanningPalTheme {
@@ -229,26 +229,26 @@ fun DefaultPreview() {
     }
 }
 
-suspend fun alarm(context: Context, channelId: String, notificationId: Int, appointmentViewModel: AppointmentViewModel) {
+suspend fun alarm(context: Context, notificationId: Int, appointmentViewModel: AppointmentViewModel) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
     while (true) {
-        Log.d("Alarm", "wait 1 min")
         delay(60000L)
         val current = LocalDateTime.now()
         val formatted = current.format(formatter)
 
         for (appointment in appointmentViewModel.appointments.value) {
             if (appointment.alarm && appointment.date + " " + appointment.time == formatted) {
+                var appointmentChannelId = appointment.alarmSound.lowercase()
+                if (appointmentChannelId == "system default") appointmentChannelId = ""
                 simpleNotification(
                     context,
-                    channelId,
+                    channelId = "MyPlanningPal_$appointmentChannelId",
                     notificationId,
                     appointment.title,
                     appointment.eventDescription ?: ""
                 )
             }
         }
-        Log.d("Alarm", "notifications sent")
     }
 }

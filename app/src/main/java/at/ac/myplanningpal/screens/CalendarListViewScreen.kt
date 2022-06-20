@@ -50,6 +50,7 @@ fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel 
         Spacer(modifier = Modifier.height(10.dp))
 
         val appointments: List<Appointment> by appointmentViewModel.appointments.collectAsState()
+        val sortedAppointments = appointments.sortedWith(compareBy({ it.date }, { it.time }))
         var dates = mutableListOf<LocalDate>()
         for (appointment in appointments) {
             if (!dates.toString().contains(appointment.date)) {
@@ -66,7 +67,7 @@ fun MainContentCalendarListVewScreen(appointmentViewModel: AppointmentViewModel 
             items(items = dates) { date ->
                 AppointmentWithMonthAndDay(
                     date = date,
-                    appointments = appointments,
+                    appointments = sortedAppointments,
                     onItemEditClick = { editAppointment ->
                         val appointmentJson = jsonAdapter.toJson(editAppointment)
                         navController.navigate(route = MyPlanningPalScreens.AddAppointmentScreen.name + "?appointment=$appointmentJson")
